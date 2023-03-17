@@ -1,5 +1,8 @@
+const { mapTermToTermObject } = require("../utils/helper");
+
 exports.generateQRLink = async (req, res, next) => {
   const {
+    urlStem,
     sscc,
     ginc,
     gsin,
@@ -42,10 +45,27 @@ exports.generateQRLink = async (req, res, next) => {
     shipForGln,
   } = req.body;
 
+  let qs = "";
+
+  for (i in req.body) {
+    if (i !== "sscc") {
+      const termObj = mapTermToTermObject(i);
+      if (typeof termObj !== "undefined") {
+        const val = req.body[i];
+        qs = qs + "?" + termObj.code + "=" + val;
+      }
+    }
+  }
+
+  const ssccTermObj = mapTermToTermObject("sscc");
+  console.log(ssccTermObj);
+
+  const dl = urlStem + "/" + ssccTermObj.code + "/" + sscc + qs + "&s4t";
+
   try {
     res.status(200).json({
       success: true,
-      data: "got it",
+      data: dl,
     });
   } catch (e) {
     next(e);
