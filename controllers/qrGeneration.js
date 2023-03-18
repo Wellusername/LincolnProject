@@ -58,17 +58,19 @@ exports.generateQRLink = async (req, res, next) => {
       if (typeof termObj !== "undefined" && val) {
         checkPattern(val, termObj);
 
+        if (termObj.datatype.toLowerCase().includes("date")) {
+          val = formateDate(val);
+        }
+
         if (i !== "sscc") {
           val = val.replace(/\s/g, "+");
+          val = encodeURIComponent(val);
           qs = qs + termObj.code + "=" + val + "&";
         }
       }
     }
 
     qs = qs.replace(/.$/, "");
-
-    // TODO: Country code
-    // Transalte special charater , and not language
 
     const ssccTermObj = mapTermToTermObject("sscc");
 
@@ -97,4 +99,10 @@ checkPattern = (val, termObj) => {
       throw new Error(termObj.id + " is not the right pattern");
     }
   }
+};
+
+formateDate = (time) => {
+  time = time.replace(/\D/g, "");
+  time = time.substring(2);
+  return time;
 };
