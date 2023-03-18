@@ -47,23 +47,30 @@ exports.generateQRLink = async (req, res, next) => {
   try {
     let qs = "";
 
+    if (!urlStem || !sscc) {
+      throw new Error("Missing url or/and sscc");
+    }
+
     for (i in req.body) {
       const termObj = mapTermToTermObject(i);
       let val = req.body[i];
 
-      if (typeof termObj !== "undefined") {
+      if (typeof termObj !== "undefined" && val) {
         checkPattern(val, termObj);
 
         if (i !== "sscc") {
           val = val.replace(/\s/g, "+");
-          qs = qs + "?" + termObj.code + "=" + val;
+          qs = qs + termObj.code + "=" + val + "?";
         }
       }
     }
 
+    qs = qs.replace(/.$/, "");
+
     const ssccTermObj = mapTermToTermObject("sscc");
 
-    const dl = urlStem + "/" + ssccTermObj.code + "/" + sscc + qs + "&s4t";
+    const dl =
+      urlStem + "/" + ssccTermObj.code + "/" + sscc + "?" + qs + "&s4t";
 
     res.status(200).json({
       success: true,
