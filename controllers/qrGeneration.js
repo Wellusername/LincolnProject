@@ -60,12 +60,15 @@ exports.generateQRLink = async (req, res, next) => {
 
         if (i !== "sscc") {
           val = val.replace(/\s/g, "+");
-          qs = qs + termObj.code + "=" + val + "?";
+          qs = qs + termObj.code + "=" + val + "&";
         }
       }
     }
 
     qs = qs.replace(/.$/, "");
+
+    // TODO: Country code
+    // Transalte special charater , and not language
 
     const ssccTermObj = mapTermToTermObject("sscc");
 
