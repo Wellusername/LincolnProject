@@ -365,6 +365,7 @@ exports.s4tTerms = [
     definition: "Global Identification Number for Consignment (GINC)",
     example: "9521234ABC12345",
     percentEncoded: false,
+    pattern: "[0-9]{4}.{0,26}",
   },
   {
     id: "gsin",
@@ -375,6 +376,7 @@ exports.s4tTerms = [
     definition: "Global Shipment Identification Number (GSIN)",
     example: "95212340000000012",
     percentEncoded: false,
+    pattern: "[0-9]{17}",
   },
   {
     id: "grai",
@@ -386,7 +388,7 @@ exports.s4tTerms = [
     example: "095211411234545678",
     percentEncoded: false,
     pattern:
-      "(d{14})([\x21-\x22\x25-\x2F\x30-\x39\x3A-\x3F\x41-\x5A\x5F\x61-\x7A]{0,16})",
+      "(\\d{14})([\x21-\x22\x25-\x2F\x30-\x39\x3A-\x3F\x41-\x5A\x5F\x61-\x7A]{0,16})",
   },
   {
     id: "routingCode",

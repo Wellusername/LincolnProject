@@ -44,30 +44,47 @@ exports.generateQRLink = async (req, res, next) => {
     shipToGln,
     shipForGln,
   } = req.body;
+  try {
+    let qs = "";
 
-  let qs = "";
-
-  for (i in req.body) {
-    if (i !== "sscc") {
+    for (i in req.body) {
       const termObj = mapTermToTermObject(i);
+      let val = req.body[i];
+
       if (typeof termObj !== "undefined") {
-        const val = req.body[i];
-        qs = qs + "?" + termObj.code + "=" + val;
+        checkPattern(val, termObj);
+
+        if (i !== "sscc") {
+          val = val.replace(/\s/g, "+");
+          qs = qs + "?" + termObj.code + "=" + val;
+        }
       }
     }
-  }
 
-  const ssccTermObj = mapTermToTermObject("sscc");
-  console.log(ssccTermObj);
+    const ssccTermObj = mapTermToTermObject("sscc");
 
-  const dl = urlStem + "/" + ssccTermObj.code + "/" + sscc + qs + "&s4t";
+    const dl = urlStem + "/" + ssccTermObj.code + "/" + sscc + qs + "&s4t";
 
-  try {
     res.status(200).json({
       success: true,
       data: dl,
     });
   } catch (e) {
-    next(e);
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    });
+  }
+};
+
+checkPattern = (val, termObj) => {
+  if (typeof termObj.pattern !== "undefined") {
+    var reg = new RegExp(termObj.pattern);
+
+    console.log(val, reg, reg.test(val));
+
+    if (!reg.test(val)) {
+      throw new Error(termObj.id + " is not the right pattern");
+    }
   }
 };
