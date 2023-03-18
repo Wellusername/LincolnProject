@@ -1,4 +1,4 @@
-const { s4tTerms } = require("../s4tTerms");
+const { s4tTerms } = require("../resource/s4tTerms");
 
 exports.mapTermToTermObject = (term) => {
   const item = s4tTerms.find((item, i) => {
