@@ -62,9 +62,16 @@ exports.generateQRLink = async (req, res, next) => {
           val = formateDate(val);
         }
 
+        if (termObj.datatype.toLowerCase().includes("measurement")) {
+          rv = gs1Measurement(val);
+          termObj.code = termObj.code.replace("n", rv.ndp);
+          val = rv.sixdigit;
+        }
+
         if (i !== "sscc") {
-          val = val.replace(/\s/g, "+");
           val = encodeURIComponent(val);
+
+          val = val.replace(/\s/g, "+");
           qs = qs + termObj.code + "=" + val + "&";
         }
       }
@@ -105,4 +112,24 @@ formateDate = (time) => {
   time = time.replace(/\D/g, "");
   time = time.substring(2);
   return time;
+};
+
+gs1Measurement = (val) => {
+  var ndp = 0;
+  var rv = {};
+  var numeric = "";
+  if (val.indexOf(".") > -1) {
+    var parts = val.split(".");
+    ndp = parts[1].length;
+    numeric = parts[0] + parts[1];
+  } else {
+    numeric = val;
+  }
+  if (numeric.length < 6) {
+    numeric = "0".repeat(6 - numeric.length) + numeric;
+  }
+
+  rv.ndp = ndp;
+  rv.sixdigit = numeric;
+  return rv;
 };
