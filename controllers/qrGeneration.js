@@ -48,3 +48,25 @@ exports.generateBarcode = (req, res, next) => {
     });
   }
 };
+
+exports.generateBarcodeBuffered = (req, res, next) => {
+  let { barcodeType, visualise } = req.body;
+  const { url } = req.body;
+
+  barcodeType = typeof barcodeType === "undefined" ? "qrcode" : barcodeType;
+  visualise = typeof barcodeType === "undefined" ? false : visualise;
+
+  try {
+    generateBarcodeUtil(barcodeType, url).then((bufferImage) => {
+      res.status(200).json({
+        success: true,
+        image: bufferImage,
+      });
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
