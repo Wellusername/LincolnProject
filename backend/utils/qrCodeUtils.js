@@ -1,9 +1,5 @@
-const { mapTermToTermObject } = require("../utils/helper");
-const {
-  checkPattern,
-  formateDate,
-  gs1Measurement,
-} = require("../utils/formater");
+const { mapTermToTermObject } = require("./helper");
+const { checkPattern, formateDate, gs1Measurement } = require("./formater");
 const bwipjs = require("bwip-js");
 
 exports.generateUrl = (reqBody) => {
