@@ -54,7 +54,6 @@ exports.generateBarcodeBuffered = (req, res, next) => {
   const { url } = req.body;
 
   barcodeType = typeof barcodeType === "undefined" ? "qrcode" : barcodeType;
-  visualise = typeof barcodeType === "undefined" ? false : visualise;
 
   try {
     generateBarcodeUtil(barcodeType, url).then((bufferImage) => {
