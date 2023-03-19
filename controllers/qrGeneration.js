@@ -1,9 +1,11 @@
 const { mapTermToTermObject } = require("../utils/helper");
+const bwipjs = require("bwip-js");
 const {
   checkPattern,
   formateDate,
   gs1Measurement,
 } = require("../utils/formater");
+const e = require("express");
 
 exports.generateQRLink = async (req, res, next) => {
   const {
@@ -99,4 +101,40 @@ exports.generateQRLink = async (req, res, next) => {
       message: e.message,
     });
   }
+};
+
+exports.generateBarcode = async (req, res, next) => {
+  let { barcodeType, visualise } = req.body;
+  const { url } = req.body;
+
+  barcodeType = typeof barcodeType === "undefined" ? "qrcode" : barcodeType;
+  visualise = typeof barcodeType === "undefined" ? false : visualise;
+
+  bwipjs
+    .toBuffer({
+      bcid: barcodeType, // Barcode type
+      text: url, // Text to encode
+      includetext: true, // Show human-readable text
+      textxalign: "center", // Always good to set this
+    })
+    .then((png) => {
+      const img = "data:image/png;base64," + png.toString("base64");
+      const visual = "<img src=" + img + " />";
+      console.log(png);
+
+      if (visualise) {
+        res.send(visual);
+      } else {
+        res.status(200).json({
+          success: true,
+          image: img,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(400).json({
+        success: false,
+        message: err.message,
+      });
+    });
 };
