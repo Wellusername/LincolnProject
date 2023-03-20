@@ -24,6 +24,7 @@
 Make sure you install:
 * [Node.js](https://nodejs.org/en/)
 * [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+* [Postman](https://www.postman.com)
 * A text editor - some recommend
    - [VS Code](https://code.visualstudio.com/)
    - [WebStorm](https://www.jetbrains.com/webstorm/)
