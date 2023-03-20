@@ -23,8 +23,7 @@
 ## Before run
 Make sure you install:
 * [Node.js](https://nodejs.org/en/)
-* npm
-* Firebase set up
+* [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 * A text editor - some recommend
    - [VS Code](https://code.visualstudio.com/)
    - [WebStorm](https://www.jetbrains.com/webstorm/)
