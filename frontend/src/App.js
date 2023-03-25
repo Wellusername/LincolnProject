@@ -1,6 +1,7 @@
 import "./App.css";
 import { Grid } from "@mui/material";
 import InfoInputLayout from "./pages/InfoInputLayout";
+import QRcodeGenerationLayout from "./pages/QRcodeGenerationLayout";
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
         <InfoInputLayout />
       </Grid>
       <Grid item xs={12} md={6}>
-        <InfoInputLayout />
+        <QRcodeGenerationLayout />
       </Grid>
     </Grid>
   );
