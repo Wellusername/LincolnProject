@@ -69,3 +69,28 @@ exports.generateBarcodeBuffered = (req, res, next) => {
     });
   }
 };
+
+exports.gnerateURLAndBarcode = (req, res, next) => {
+  try {
+    const url = generateUrl(req.body);
+
+    generateBarcodeUtil("qrcode", url).then((bufferImage) => {
+      console.log(bufferImage);
+
+      const img = "data:image/png;base64," + bufferImage.toString("base64");
+      const visual = "<img src=" + img + " />";
+      console.log(visual);
+
+      res.status(200).json({
+        success: true,
+        url: url,
+        image: img,
+      });
+    });
+  } catch (e) {
+    res.status(400).json({
+      success: false,
+      message: e.message,
+    });
+  }
+};
