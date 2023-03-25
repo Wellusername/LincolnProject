@@ -1,6 +1,6 @@
 import "./App.css";
 import { Grid } from "@mui/material";
-import InfoInputLayout from "./components/InfoInputLayout";
+import InfoInputLayout from "./pages/InfoInputLayout";
 
 function App() {
   return (

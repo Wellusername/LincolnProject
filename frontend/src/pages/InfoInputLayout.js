@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import InfoInput from "./InfoInput";
-import InfoInputWithAI from "./InfoInputWithAI";
+import InfoInput from "../components/input/InfoInput";
+import InfoInputWithAI from "../components/input/InfoInputWithAI";
 import { s4tTerm, primaryIdentifiers } from "../resource/s4tTerm";
 
 function InfoInputLayout() {

@@ -1,8 +1,6 @@
 import React from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 
-import { makeStyles } from "@material-ui/core/styles";
-
 function InfoInputWithAI({ label, AI, color }) {
   return (
     <Grid container style={{ backgroundColor: color }}>
