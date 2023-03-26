@@ -1,8 +1,21 @@
+import React, { useState, useEffect } from "react";
 import { Grid, TextareaAutosize, Typography } from "@mui/material";
-import React from "react";
 import QRcodeDisplay from "../components/QRCode/QRcodeDisplay";
+import { getUrlAndQRcode } from "../utils/connectBackend";
 
-function QRcodeGenerationLayout() {
+function QRcodeGenerationLayout({ info }) {
+  const [result, setResult] = useState({});
+  useEffect(() => {
+    try {
+      getUrlAndQRcode(info).then((res) => {
+        console.log(res);
+        setResult(res);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }, [info]);
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -12,7 +25,12 @@ function QRcodeGenerationLayout() {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <TextareaAutosize minRows={15} maxRows={20} style={{ width: "100%" }} />
+        <TextareaAutosize
+          value={result.url}
+          minRows={15}
+          maxRows={20}
+          style={{ width: "100%" }}
+        />
       </Grid>
       <Grid item xs={12}>
         <Typography variant="h5" sx={{ fontWeight: "bold" }} textAlign="center">
@@ -21,7 +39,7 @@ function QRcodeGenerationLayout() {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <QRcodeDisplay />
+        <QRcodeDisplay qrcode={result.image} />
       </Grid>
     </Grid>
   );
