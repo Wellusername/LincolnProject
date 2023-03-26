@@ -3,8 +3,33 @@ import { Grid } from "@mui/material";
 import InfoInput from "../components/input/InfoInput";
 import InfoInputWithAI from "../components/input/InfoInputWithAI";
 import { s4tTerm, primaryIdentifiers } from "../resource/s4tTerm";
+import PullDownInputWIthAI from "../components/input/PullDownInputWIthAI";
 
 function InfoInputLayout({ handleInput }) {
+  const stringInput = (obj, i) => {
+    return (
+      <InfoInputWithAI
+        id={obj.id}
+        label={obj.label}
+        AI={obj.code}
+        color={i.color}
+        handleInput={handleInput}
+      />
+    );
+  };
+
+  const booleanInput = (obj, i) => {
+    return (
+      <PullDownInputWIthAI
+        id={obj.id}
+        label={obj.label}
+        AI={obj.code}
+        color={i.color}
+        handleInput={handleInput}
+      />
+    );
+  };
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -31,13 +56,11 @@ function InfoInputLayout({ handleInput }) {
                 return i.obj.map((obj) => {
                   return (
                     <Grid item xs={12}>
-                      <InfoInputWithAI
-                        id={obj.id}
-                        label={obj.label}
-                        AI={obj.code}
-                        color={i.color}
-                        handleInput={handleInput}
-                      />
+                      {obj.datatype != undefined
+                        ? obj.datatype == "xsd:boolean"
+                          ? booleanInput(obj, i)
+                          : stringInput(obj, i)
+                        : ""}
                     </Grid>
                   );
                 });
