@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function getQRcode(infoData) {
+export async function getUrlAndQRcode(infoData) {
   const body = infoData;
   const response = await axios(
     `${process.env.REACT_APP_URL}/api/generation/url-and-code`,
@@ -9,7 +9,8 @@ export async function getQRcode(infoData) {
         "Content-type": "application/json",
       },
       data: body,
-      method: "GET",
+      method: "POST",
     }
   );
+  return response.data;
 }

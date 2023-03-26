@@ -11,7 +11,7 @@ exports.primaryIdentifiers = [
     pattern: "[0-9]{18}",
   },
   {
-    id: "uri",
+    id: "urlStem",
     label: "URI stem",
     grouping: "PrimaryIdentifiers",
     datatype: "xsd:string",
@@ -89,7 +89,7 @@ const otherIdentifier = [
 
 const transportTaskInformation = [
   {
-    id: "serviceCodedescription",
+    id: "serviceCodeDescription",
     code: "4320",
     label: "Service code description",
     grouping: "TransportTaskInformation",
