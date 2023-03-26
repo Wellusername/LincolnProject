@@ -4,6 +4,7 @@ import InfoInput from "../components/input/InfoInput";
 import InfoInputWithAI from "../components/input/InfoInputWithAI";
 import { s4tTerm, primaryIdentifiers } from "../resource/s4tTerm";
 import PullDownInputWIthAI from "../components/input/PullDownInputWIthAI";
+import MeasurementInputWithAI from "../components/input/MeasurementInputWithAI";
 
 function InfoInputLayout({ handleInput }) {
   const stringInput = (obj, i) => {
@@ -23,6 +24,19 @@ function InfoInputLayout({ handleInput }) {
       <PullDownInputWIthAI
         id={obj.id}
         label={obj.label}
+        AI={obj.code}
+        color={i.color}
+        handleInput={handleInput}
+      />
+    );
+  };
+
+  const measurementInput = (obj, i) => {
+    return (
+      <MeasurementInputWithAI
+        id={obj.id}
+        label={obj.label}
+        unit={obj.unit}
         AI={obj.code}
         color={i.color}
         handleInput={handleInput}
@@ -59,6 +73,8 @@ function InfoInputLayout({ handleInput }) {
                       {obj.datatype != undefined
                         ? obj.datatype == "xsd:boolean"
                           ? booleanInput(obj, i)
+                          : obj.datatype == "gs1:Measurement"
+                          ? measurementInput(obj, i)
                           : stringInput(obj, i)
                         : ""}
                     </Grid>
