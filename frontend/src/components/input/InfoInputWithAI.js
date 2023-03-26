@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 
-function InfoInputWithAI({ label, AI, color }) {
+function InfoInputWithAI({ id, label, AI, color, handleInput }) {
   return (
     <Grid container style={{ backgroundColor: color }}>
       <Grid item xs={5} style={{ display: "flex", alignItems: "center" }}>
@@ -18,6 +18,7 @@ function InfoInputWithAI({ label, AI, color }) {
             borderRadius: "4px",
           }}
           size="small"
+          onChange={(e) => handleInput(e, id)}
         />
       </Grid>
       <Grid

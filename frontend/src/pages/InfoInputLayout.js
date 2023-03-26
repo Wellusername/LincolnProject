@@ -4,7 +4,7 @@ import InfoInput from "../components/input/InfoInput";
 import InfoInputWithAI from "../components/input/InfoInputWithAI";
 import { s4tTerm, primaryIdentifiers } from "../resource/s4tTerm";
 
-function InfoInputLayout() {
+function InfoInputLayout({ handleInput }) {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -12,7 +12,11 @@ function InfoInputLayout() {
           {primaryIdentifiers.map((i) => {
             return (
               <Grid item xs={12}>
-                <InfoInput label={i.label} />
+                <InfoInput
+                  id={i.id}
+                  label={i.label}
+                  handleInput={handleInput}
+                />
               </Grid>
             );
           })}
@@ -28,9 +32,11 @@ function InfoInputLayout() {
                   return (
                     <Grid item xs={12}>
                       <InfoInputWithAI
+                        id={obj.id}
                         label={obj.label}
                         AI={obj.code}
                         color={i.color}
+                        handleInput={handleInput}
                       />
                     </Grid>
                   );

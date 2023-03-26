@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 
-function InfoInput({ label }) {
+function InfoInput({ id, label, handleInput }) {
   return (
     <Grid container>
       <Grid item xs={5} style={{ display: "flex", alignItems: "center" }}>
@@ -13,6 +13,7 @@ function InfoInput({ label }) {
           variant="outlined"
           style={{ width: "100%" }}
           size="small"
+          onChange={(e) => handleInput(e, id)}
         />
       </Grid>
     </Grid>
