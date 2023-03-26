@@ -12,6 +12,11 @@ function InfoInputWithAI({ id, label, AI, color, handleInput }) {
           id="outlined-basic"
           variant="outlined"
           height="4px"
+          inputProps={{
+            style: {
+              height: "15px",
+            },
+          }}
           style={{
             width: "100%",
             backgroundColor: "white",

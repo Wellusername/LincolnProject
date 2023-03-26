@@ -19,7 +19,7 @@ function PullDownInputWIthAI({ id, label, AI, color, handleInput }) {
           id="demo-simple-select"
           value={val}
           onChange={handleChange}
-          style={{ backgroundColor: "white" }}
+          style={{ backgroundColor: "white", height: "30px" }}
         >
           <MenuItem value={1}>Yes</MenuItem>
           <MenuItem value={0}>No</MenuItem>

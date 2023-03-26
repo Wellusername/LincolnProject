@@ -13,6 +13,11 @@ function InfoInput({ id, label, handleInput }) {
           variant="outlined"
           style={{ width: "100%" }}
           size="small"
+          inputProps={{
+            style: {
+              height: "15px",
+            },
+          }}
           onChange={(e) => handleInput(e, id)}
         />
       </Grid>
