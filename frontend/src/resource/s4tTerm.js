@@ -470,11 +470,11 @@ exports.s4tTerm = [
   },
   {
     obj: deliveryInstructions,
-    color: "#ccccff",
+    color: "#ccffcc",
   },
   {
     obj: returnAddressInformation,
-    color: "#ccffcc",
+    color: "#ccccff",
   },
   {
     obj: measurements,
