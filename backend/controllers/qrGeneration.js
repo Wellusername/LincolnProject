@@ -72,6 +72,7 @@ exports.generateBarcodeBuffered = (req, res, next) => {
 
 exports.gnerateURLAndBarcode = (req, res, next) => {
   try {
+    console.log(req.body);
     const url = generateUrl(req.body);
 
     generateBarcodeUtil("qrcode", url).then((bufferImage) => {

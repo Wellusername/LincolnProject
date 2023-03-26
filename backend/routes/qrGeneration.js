@@ -8,9 +8,9 @@ const {
 
 const router = express.Router();
 
-router.route("/url").get(generateQRLink);
-router.route("/url-and-code").get(gnerateURLAndBarcode);
-router.route("/code").get(generateBarcode);
-router.route("/code-buffer-image").get(generateBarcodeBuffered);
+router.route("/url").post(generateQRLink);
+router.route("/url-and-code").post(gnerateURLAndBarcode);
+router.route("/code").post(generateBarcode);
+router.route("/code-buffer-image").post(generateBarcodeBuffered);
 
 module.exports = router;

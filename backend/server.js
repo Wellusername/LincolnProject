@@ -4,6 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
+app.use(cors());
 app.use(express.json()); // support json encoded boies
 // you can parse incoming Request Object if object, with nested objects, or generally any type.
 app.use(express.urlencoded({ extended: true }));
