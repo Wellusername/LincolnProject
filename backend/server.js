@@ -15,6 +15,7 @@ const server = app.listen(PORT, () => {
 });
 
 app.use("/api/generation", require("./routes/qrGeneration"));
+app.use("/api/event", require("./routes/epicEvent"));
 
 process.on("unhandledRejection", (err, promise) => {
   console.log(`Logged error: ${err}`);
