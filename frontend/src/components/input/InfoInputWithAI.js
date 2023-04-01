@@ -1,7 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 
-function InfoInputWithAI({ id, label, AI, color, handleInput }) {
+function InfoInputWithAI({
+  id,
+  label,
+  AI,
+  color,
+  handleInput,
+  clear,
+  handleClearInput,
+}) {
+  const [text, setText] = useState("");
+  console.log(clear);
+  useEffect(() => {
+    if (clear) {
+      console.log(clear);
+      setText("");
+      handleClearInput(false);
+    }
+  }, [clear]);
+
+  const handleLocalInput = (e) => {
+    setText(e.value);
+  };
+
   return (
     <Grid container style={{ backgroundColor: color }}>
       <Grid item xs={5} style={{ display: "flex", alignItems: "center" }}>
@@ -23,7 +45,11 @@ function InfoInputWithAI({ id, label, AI, color, handleInput }) {
             borderRadius: "4px",
           }}
           size="small"
-          onChange={(e) => handleInput(e, id)}
+          onChange={(e) => {
+            handleInput(e, id);
+            handleLocalInput(e);
+          }}
+          value={text}
         />
       </Grid>
       <Grid

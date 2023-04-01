@@ -3,9 +3,10 @@ import { Button, Grid, TextareaAutosize, Typography } from "@mui/material";
 import QRcodeDisplay from "../components/QRCode/QRcodeDisplay";
 import { getUrlAndQRcode } from "../utils/connectBackend";
 
-function QRcodeGenerationLayout({ info }) {
+function QRcodeGenerationLayout({ info, handleClearInput, handleClearInfo }) {
   const [result, setResult] = useState({});
   const [generatedURL, setGeneratedURL] = useState(false);
+
   useEffect(() => {
     try {
       const containEmptyString = (element) => element === "";
@@ -64,7 +65,15 @@ function QRcodeGenerationLayout({ info }) {
       >
         <Grid item xs={2} />
         <Grid item xs={2}>
-          <Button variant="outlined" style={{ minWidth: "100%" }}>
+          <Button
+            variant="outlined"
+            style={{ minWidth: "100%" }}
+            onClick={() => {
+              handleClearInput(true);
+              setResult({ url: "" });
+              handleClearInfo();
+            }}
+          >
             Clear
           </Button>
         </Grid>

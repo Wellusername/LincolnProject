@@ -5,6 +5,7 @@ import { useState } from "react";
 
 function EncodePage() {
   const [info, setInfo] = useState({});
+  const [clear, setClear] = useState("");
 
   const handleInput = (event, id) => {
     const newInfo = { ...info };
@@ -12,13 +13,29 @@ function EncodePage() {
     setInfo(newInfo);
   };
 
+  const handleClearInput = (val) => {
+    setClear(val);
+  };
+
+  const handleClearInfo = () => {
+    setInfo({});
+  };
+
   return (
     <Grid container>
       <Grid item xs={12} md={6}>
-        <InfoInputLayout handleInput={handleInput} />
+        <InfoInputLayout
+          handleInput={handleInput}
+          clear={clear}
+          handleClearInput={handleClearInput}
+        />
       </Grid>
       <Grid item xs={12} md={6}>
-        <QRcodeGenerationLayout info={info} />
+        <QRcodeGenerationLayout
+          info={info}
+          handleClearInput={handleClearInput}
+          handleClearInfo={handleClearInfo}
+        />
       </Grid>
     </Grid>
   );

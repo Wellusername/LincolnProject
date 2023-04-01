@@ -7,7 +7,7 @@ import PullDownInputWIthAI from "../components/input/PullDownInputWIthAI";
 import MeasurementInputWithAI from "../components/input/MeasurementInputWithAI";
 import DateTimeInputWithAI from "../components/input/DateTimeInputWithAI";
 
-function InfoInputLayout({ handleInput }) {
+function InfoInputLayout({ handleInput, clear, handleClearInput }) {
   const stringInput = (obj, i) => {
     return (
       <InfoInputWithAI
@@ -15,7 +15,9 @@ function InfoInputLayout({ handleInput }) {
         label={obj.label}
         AI={obj.code}
         color={i.color}
+        clear={clear}
         handleInput={handleInput}
+        handleClearInput={handleClearInput}
       />
     );
   };
@@ -27,7 +29,9 @@ function InfoInputLayout({ handleInput }) {
         label={obj.label}
         AI={obj.code}
         color={i.color}
+        clear={clear}
         handleInput={handleInput}
+        handleClearInput={handleClearInput}
       />
     );
   };
@@ -39,8 +43,10 @@ function InfoInputLayout({ handleInput }) {
         label={obj.label}
         unit={obj.unit}
         AI={obj.code}
+        clear={clear}
         color={i.color}
         handleInput={handleInput}
+        handleClearInput={handleClearInput}
       />
     );
   };
@@ -54,6 +60,8 @@ function InfoInputLayout({ handleInput }) {
         AI={obj.code}
         color={i.color}
         handleInput={handleInput}
+        clear={clear}
+        handleClearInput={handleClearInput}
       />
     );
   };
@@ -69,6 +77,8 @@ function InfoInputLayout({ handleInput }) {
                   id={i.id}
                   label={i.label}
                   handleInput={handleInput}
+                  clear={clear}
+                  handleClearInput={handleClearInput}
                 />
               </Grid>
             );
