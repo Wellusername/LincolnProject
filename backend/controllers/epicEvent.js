@@ -1,12 +1,16 @@
 const fs = require("fs");
+var spread_sheet = require("spread_sheet");
 
 exports.generateEvent = async (req, res, next) => {
   const { epic, event } = req.body;
 
-  let data = "\n" + epic + " " + event + " " + new Date().toISOString();
+  let data = [[epic, event, new Date().toISOString()]];
 
-  fs.appendFile("./data/record.txt", data, (err) => {
-    // In case of a error throw err.
+  var filePath = "./data/record.csv";
+  var sheetName = "Sheet1";
+
+  spread_sheet.addRow(data, filePath, sheetName, function (err, result) {
+    console.log(err, result);
     if (err) {
       res.status(400).json({
         success: false,
