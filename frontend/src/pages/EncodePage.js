@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
-import InfoInputLayout from "./pages/InfoInputLayout";
-import QRcodeGenerationLayout from "./pages/QRcodeGenerationLayout";
+import InfoInputLayout from "../layouts/InfoInputLayout";
+import QRcodeGenerationLayout from "../layouts/QRcodeGenerationLayout";
 import { useState } from "react";
 
-function App() {
+function EncodePage() {
   const [info, setInfo] = useState({});
 
   const handleInput = (event, id) => {
@@ -24,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default EncodePage;
