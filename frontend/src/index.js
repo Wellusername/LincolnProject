@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./layouts/Navigation";
 import { createTheme, ThemeProvider } from "@mui/material";
 import EncodePage from "./pages/EncodePage";
+import ScanPage from "./pages/ScanPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -27,6 +28,7 @@ root.render(
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<EncodePage />} />
+            <Route path="/scan" element={<ScanPage />} />
           </Route>
         </Routes>
       </ThemeProvider>

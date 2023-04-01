@@ -19,7 +19,7 @@ const Layout = () => {
             <Button variant="text" color="primary" component={Link} to="/">
               Encode
             </Button>
-            <Button variant="text" color="primary">
+            <Button variant="text" color="primary" component={Link} to="/scan">
               Scan
             </Button>
           </Toolbar>
