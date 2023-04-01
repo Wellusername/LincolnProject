@@ -1,13 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, MenuItem, Select, TextField, Typography } from "@mui/material";
 
-function PullDownInputWIthAI({ id, label, AI, color, handleInput }) {
+function PullDownInputWIthAI({
+  id,
+  label,
+  AI,
+  color,
+  handleInput,
+  clear,
+  handleClearInput,
+}) {
   const [val, setVal] = useState("");
 
   const handleChange = (e) => {
     setVal(e.target.value);
     handleInput(e, id);
   };
+
+  useEffect(() => {
+    if (clear) {
+      console.log(clear);
+      setVal("");
+      handleClearInput(false);
+    }
+  }, [clear]);
+
   return (
     <Grid container style={{ backgroundColor: color }}>
       <Grid item xs={5} style={{ display: "flex", alignItems: "center" }}>
