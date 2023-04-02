@@ -9,6 +9,7 @@ function InfoInputWithAI({
   handleInput,
   clear,
   handleClearInput,
+  disable,
 }) {
   const [text, setText] = useState("");
   console.log(clear);
@@ -50,6 +51,7 @@ function InfoInputWithAI({
             handleLocalInput(e);
           }}
           value={text}
+          disabled={disable}
         />
       </Grid>
       <Grid

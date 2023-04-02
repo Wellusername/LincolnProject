@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Grid, TextField, Typography } from "@mui/material";
 
-function InfoInput({ id, label, handleInput, clear, handleClearInput }) {
+function InfoInput({
+  id,
+  label,
+  handleInput,
+  clear,
+  handleClearInput,
+  disable,
+}) {
   const [text, setText] = useState("");
 
   useEffect(() => {
@@ -37,6 +44,7 @@ function InfoInput({ id, label, handleInput, clear, handleClearInput }) {
             handleLocalInput(e);
           }}
           value={text}
+          disabled={disable}
         />
       </Grid>
     </Grid>

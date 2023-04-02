@@ -9,6 +9,7 @@ function DateTimeInputWithAI({
   handleInput,
   clear,
   handleClearInput,
+  disable,
 }) {
   const [text, setText] = useState("");
 
@@ -49,6 +50,7 @@ function DateTimeInputWithAI({
             handleLocalInput(e);
           }}
           value={text}
+          disabled={disable}
         />
       </Grid>
       <Grid

@@ -9,6 +9,7 @@ function PullDownInputWIthAI({
   handleInput,
   clear,
   handleClearInput,
+  disable,
 }) {
   const [val, setVal] = useState("");
 
@@ -37,6 +38,7 @@ function PullDownInputWIthAI({
           value={val}
           onChange={handleChange}
           style={{ backgroundColor: "white", height: "30px" }}
+          disabled={disable}
         >
           <MenuItem value={1}>Yes</MenuItem>
           <MenuItem value={0}>No</MenuItem>

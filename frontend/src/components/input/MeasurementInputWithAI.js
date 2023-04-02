@@ -10,6 +10,7 @@ function MeasurementInputWithAI({
   handleInput,
   clear,
   handleClearInput,
+  disable,
 }) {
   const [text, setText] = useState("");
 
@@ -59,6 +60,7 @@ function MeasurementInputWithAI({
               handleLocalInput(e);
             }}
             value={text}
+            disabled={disable}
           />
         </Grid>
         <Grid item>
