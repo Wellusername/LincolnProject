@@ -1,3 +1,4 @@
+const e = require("express");
 const { s4tTerms } = require("../resource/s4tTerms");
 
 // https://example.com/00/195212342345678909?4300=fdsfssd&s4t
@@ -78,10 +79,13 @@ exports.extractInfoFromDigitalLink = (digitalLink) => {
         if ((kv[1] !== null) & (kv[1] !== undefined)) {
           var v = kv[1].replace(/\+/g, "%20");
           const data = findItemWithCode(kv[0]);
+
           if (data.datatype === "gs1:Measurement") {
             const rv = gs1ToMeasurement(kv[0], decodeURIComponent(v));
             qso[rv.code] = rv.value;
             delete qso[kv[0]];
+          } else if (data.datatype === "xsd:dateTime") {
+            qso[kv[0]] = gs1date4(kv[1]);
           } else {
             qso[kv[0]] = decodeURIComponent(v);
           }
@@ -89,19 +93,70 @@ exports.extractInfoFromDigitalLink = (digitalLink) => {
       }
     });
   }
-  console.log(qso);
   return qso;
 };
 
 findItemWithCode = (code) => {
-  return s4tTerms.find(
-    (item) => item.code === code || item.code.slice(0, -1) === code.slice(0, -1)
-  );
+  return s4tTerms.find((item) => {
+    if (item.code.slice(0, 2) === "33") {
+      return item.code.slice(0, -1) === code.slice(0, -1);
+    } else {
+      return item.code === code;
+    }
+  });
 };
 
 gs1ToMeasurement = (code, val) => {
   var rv = {};
   rv.value = val / Math.pow(10, parseInt(code.slice(-1)));
   rv.code = code.slice(0, -1) + "n";
+  return rv;
+};
+
+gs1date4 = (gs1Date) => {
+  var rv = "";
+  var regexDate = new RegExp("^\\d{6}|\\d{8}|\\d{10}$");
+  if (gs1Date !== undefined && regexDate.test(gs1Date)) {
+    var doubleDigits = gs1Date.split(/(\d{2})/);
+    // TODO determine this correctly based on whether >=51 - see Gen Specs
+    var year = parseInt(doubleDigits[1]);
+
+    var currentYear = new Date().getFullYear().toString();
+    var currentLastYY = parseInt(currentYear.substr(-2));
+    var currentFirstYY = parseInt(currentYear.substr(0, 2));
+
+    var diff = year - currentLastYY;
+    var fullyear = currentFirstYY.toString() + year.toString();
+    if (diff >= 51 && diff <= 99) {
+      fullyear = (currentFirstYY - 1).toString() + year.toString();
+    }
+    if (diff >= -99 && diff <= -50) {
+      fullyear = (currentFirstYY + 1).toString() + year.toString();
+    }
+
+    var hour = "00";
+    var min = "00";
+    if (gs1Date.length > 6) {
+      hour = doubleDigits[7];
+    }
+    if (gs1Date.length > 8) {
+      min = doubleDigits[9];
+    }
+
+    if (fullyear !== undefined) {
+      rv =
+        doubleDigits[5] +
+        "/" +
+        doubleDigits[3] +
+        "/" +
+        fullyear +
+        " " +
+        hour +
+        ":" +
+        min;
+    }
+  }
+  console.log(rv);
+
   return rv;
 };
