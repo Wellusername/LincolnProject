@@ -65,7 +65,14 @@ exports.primaryValueExtract = (digitalLink) => {
 };
 
 exports.extractInfoFromDigitalLink = (digitalLink) => {
-  var qso = {};
+  var otherIdentifier = {};
+  var transportTaskInformation = {};
+  var freightUnitInformation = {};
+  var shippingAddressInformation = {};
+  var deliveryInstructions = {};
+  var returnAddressInformation = {};
+  var measurements = {};
+
   var uri = digitalLink;
 
   if (uri !== undefined && uri !== null && uri !== "") {
@@ -80,19 +87,61 @@ exports.extractInfoFromDigitalLink = (digitalLink) => {
           var v = kv[1].replace(/\+/g, "%20");
           const data = findItemWithCode(kv[0]);
 
+          if (data === "undefined" || typeof data === "undefined") {
+            new Error(kv[0] + " not a right code");
+          }
+          const codeVal = {};
           if (data.datatype === "gs1:Measurement") {
             const rv = gs1ToMeasurement(kv[0], decodeURIComponent(v));
-            qso[rv.code] = rv.value;
-            delete qso[kv[0]];
+            codeVal[rv.code] = rv.value;
           } else if (data.datatype === "xsd:dateTime") {
-            qso[kv[0]] = gs1date4(kv[1]);
+            codeVal[kv[0]] = gs1date4(kv[1]);
           } else {
-            qso[kv[0]] = decodeURIComponent(v);
+            codeVal[kv[0]] = decodeURIComponent(v);
+          }
+
+          console.log(data.grouping);
+
+          if (data.grouping === "OtherIdentifiers") {
+            otherIdentifier = { ...otherIdentifier, ...codeVal };
+          } else if (data.grouping === "TransportTaskInformation") {
+            transportTaskInformation = {
+              ...transportTaskInformation,
+              ...codeVal,
+            };
+          } else if (data.grouping === "FreightUnitInformation") {
+            freightUnitInformation = { ...freightUnitInformation, ...codeVal };
+          } else if (data.grouping === "ShippingAddressInformation") {
+            shippingAddressInformation = {
+              ...shippingAddressInformation,
+              ...codeVal,
+            };
+          } else if (data.grouping === "DeliveryInstructions") {
+            deliveryInstructions = { ...deliveryInstructions, ...codeVal };
+          } else if (data.grouping === "ReturnAddressInformation") {
+            returnAddressInformation = {
+              ...returnAddressInformation,
+              ...codeVal,
+            };
+          } else if (data.grouping === "Measurements") {
+            measurements = { ...measurements, ...codeVal };
+          } else {
+            throw new Error("not belong to any group");
           }
         }
       }
     });
   }
+
+  const qso = {
+    otherIdentifier,
+    transportTaskInformation,
+    freightUnitInformation,
+    shippingAddressInformation,
+    deliveryInstructions,
+    returnAddressInformation,
+    measurements,
+  };
   return qso;
 };
 
