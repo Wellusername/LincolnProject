@@ -20,12 +20,10 @@ exports.decodeUri = async (req, res, next) => {
       success: true,
       info: result,
     });
-  } catch (e) {
+  } catch (err) {
     res.status(400).json({
       success: false,
       message: err.message,
     });
   }
-
-  console.log(result);
 };

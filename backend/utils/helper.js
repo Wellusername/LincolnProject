@@ -77,23 +77,31 @@ exports.extractInfoFromDigitalLink = (digitalLink) => {
         var kv = el.split("=");
         if ((kv[1] !== null) & (kv[1] !== undefined)) {
           var v = kv[1].replace(/\+/g, "%20");
-          qso[findId(kv[0])] = decodeURIComponent(v);
+          const data = findItemWithCode(kv[0]);
+          if (data.datatype === "gs1:Measurement") {
+            const rv = gs1ToMeasurement(kv[0], decodeURIComponent(v));
+            qso[rv.code] = rv.value;
+            delete qso[kv[0]];
+          } else {
+            qso[kv[0]] = decodeURIComponent(v);
+          }
         }
       }
     });
   }
+  console.log(qso);
   return qso;
 };
 
-findId = (code) => {
-  return s4tTerms.filter((item) => {
-    if (
-      typeof item.datatype !== "undefined" &&
-      item.datatype === "gs1:Measurement"
-    ) {
-      return item.code.slice(0, -1) === code.slice(0, -1);
-    } else {
-      return item.code === code;
-    }
-  })[0].id;
+findItemWithCode = (code) => {
+  return s4tTerms.find(
+    (item) => item.code === code || item.code.slice(0, -1) === code.slice(0, -1)
+  );
+};
+
+gs1ToMeasurement = (code, val) => {
+  var rv = {};
+  rv.value = val / Math.pow(10, parseInt(code.slice(-1)));
+  rv.code = code.slice(0, -1) + "n";
+  return rv;
 };
