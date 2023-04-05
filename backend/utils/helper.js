@@ -194,12 +194,12 @@ gs1date4 = (gs1Date) => {
 
     if (fullyear !== undefined) {
       rv =
-        doubleDigits[5] +
-        "/" +
-        doubleDigits[3] +
-        "/" +
         fullyear +
-        " " +
+        "-" +
+        doubleDigits[3] +
+        "-" +
+        doubleDigits[5] +
+        "T" +
         hour +
         ":" +
         min;

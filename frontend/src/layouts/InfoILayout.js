@@ -102,6 +102,13 @@ function InfoLayout({
         color={i.color}
         clear={clear}
         disable
+        val={
+          Object.keys(decodedResult).length !== 0
+            ? decodedResult.deliveryInstructions[obj.code]
+              ? decodedResult.deliveryInstructions[obj.code]
+              : ""
+            : ""
+        }
       />
     );
   };
