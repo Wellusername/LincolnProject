@@ -11,14 +11,16 @@ function MeasurementInputWithAI({
   clear,
   handleClearInput,
   disable,
+  val,
 }) {
   const [text, setText] = useState("");
+  const [decode, setDecode] = useState(val);
 
   useEffect(() => {
     if (clear) {
-      console.log(clear);
       setText("");
       handleClearInput(false);
+      setDecode("");
     }
   }, [clear]);
 
@@ -59,7 +61,7 @@ function MeasurementInputWithAI({
               handleInput(e, id);
               handleLocalInput(e);
             }}
-            value={text}
+            value={!disable ? text : val}
             disabled={disable}
           />
         </Grid>
