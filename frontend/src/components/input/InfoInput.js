@@ -11,6 +11,7 @@ function InfoInput({
   val,
 }) {
   const [text, setText] = useState("");
+  console.log(val);
 
   useEffect(() => {
     if (clear) {

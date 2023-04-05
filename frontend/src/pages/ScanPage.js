@@ -13,6 +13,12 @@ function ScanPage() {
     setScanResult(val);
   };
 
+  const handleScanButton = () => {
+    setScan(true);
+    setDecodedResult({});
+    setScanResult("");
+  };
+
   useEffect(() => {
     if (scanResult && scanResult !== "") {
       decodeUri(scanResult).then((res) => {
@@ -25,7 +31,7 @@ function ScanPage() {
         }
       });
     }
-  }, scanResult);
+  }, [scanResult]);
 
   const displayButton = () => {
     console.log(scan);
@@ -34,7 +40,7 @@ function ScanPage() {
         <Button
           variant="outlined"
           color="primary"
-          onClick={() => setScan(true)}
+          onClick={() => handleScanButton()}
         >
           Scan
         </Button>

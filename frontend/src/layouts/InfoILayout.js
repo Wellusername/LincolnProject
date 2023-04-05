@@ -118,6 +118,7 @@ function InfoLayout({
       <Grid item xs={12}>
         <Grid container spacing={0.3}>
           {primaryIdentifiers.map((i) => {
+            console.log(decodedResult);
             return (
               <Grid item xs={12}>
                 <InfoInput
@@ -128,10 +129,12 @@ function InfoLayout({
                   handleClearInput={handleClearInput}
                   disable
                   val={
-                    i.id === "sscc"
-                      ? decodedResult.sscc
-                      : i.id === "urlStem"
-                      ? decodedResult.urlStem
+                    Object.keys(decodedResult).length !== 0
+                      ? i.id === "sscc"
+                        ? decodedResult.sscc
+                        : i.id === "urlStem"
+                        ? decodedResult.urlStem
+                        : ""
                       : ""
                   }
                 />
