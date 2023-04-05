@@ -14,3 +14,21 @@ export async function getUrlAndQRcode(infoData) {
   );
   return response.data;
 }
+
+export async function decodeUri(uri) {
+  const data = {};
+  data["uri"] = uri;
+  console.log(data);
+
+  const response = await axios(
+    `${process.env.REACT_APP_URL}/api/event/decode`,
+    {
+      headers: {
+        "Content-type": "application/json",
+      },
+      data: data,
+      method: "POST",
+    }
+  );
+  return response.data;
+}

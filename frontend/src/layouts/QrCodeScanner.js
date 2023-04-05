@@ -2,12 +2,11 @@ import { Grid, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
 import QrReader from "react-qr-scanner";
 
-function QrCodeScanner({ scanResult, handleScanResult }) {
+function QrCodeScanner({ scanResult, handleScanResult, scan }) {
   const qrRef = useRef(null);
   const handleScan = (data) => {
     if (data) {
       handleScanResult(data.text);
-      console.log(data);
       if (qrRef.current) {
         qrRef.current.pause();
       }
@@ -18,9 +17,9 @@ function QrCodeScanner({ scanResult, handleScanResult }) {
     console.log(error);
   };
 
-  return (
-    <Grid container>
-      <Grid item>
+  const displayQeReader = () => {
+    if (scan) {
+      return (
         <div style={{ position: "relative", width: "100%", height: "100%" }}>
           <QrReader
             ref={qrRef}
@@ -42,7 +41,22 @@ function QrCodeScanner({ scanResult, handleScanResult }) {
             }}
           ></div>
         </div>
-        <Typography>{scanResult}</Typography>
+      );
+    }
+  };
+
+  return (
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Grid item>{displayQeReader()}</Grid>
+      <Grid item>
+        <Typography textAlign={"center"} variant="h6">
+          {scanResult}
+        </Typography>
       </Grid>
     </Grid>
   );
