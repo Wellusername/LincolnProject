@@ -10,18 +10,19 @@ function PullDownInputWIthAI({
   clear,
   handleClearInput,
   disable,
+  val,
 }) {
-  const [val, setVal] = useState("");
+  const [text, setText] = useState("");
 
   const handleChange = (e) => {
-    setVal(e.target.value);
+    setText(e.target.value);
     handleInput(e, id);
   };
 
   useEffect(() => {
     if (clear) {
       console.log(clear);
-      setVal("");
+      setText("");
       handleClearInput(false);
     }
   }, [clear]);
@@ -35,7 +36,7 @@ function PullDownInputWIthAI({
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={val}
+          value={!disable ? text : val}
           onChange={handleChange}
           style={{ backgroundColor: "white", height: "30px" }}
           disabled={disable}

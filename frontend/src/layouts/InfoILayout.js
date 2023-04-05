@@ -7,8 +7,15 @@ import PullDownInputWIthAI from "../components/input/PullDownInputWIthAI";
 import MeasurementInputWithAI from "../components/input/MeasurementInputWithAI";
 import DateTimeInputWithAI from "../components/input/DateTimeInputWithAI";
 
-function InfoLayout({ handleInput, clear, handleClearInput, disable }) {
+function InfoLayout({
+  handleInput,
+  clear,
+  handleClearInput,
+  disable,
+  decodedResult,
+}) {
   const stringInput = (obj, i) => {
+    console.log(decodedResult);
     return (
       <InfoInputWithAI
         id={obj.id}
@@ -17,6 +24,27 @@ function InfoLayout({ handleInput, clear, handleClearInput, disable }) {
         color={i.color}
         clear={clear}
         disable
+        val={
+          Object.keys(decodedResult).length !== 0
+            ? decodedResult.otherIdentifier[obj.code]
+              ? decodedResult.otherIdentifier[obj.code]
+              : decodedResult.transportTaskInformation[obj.code]
+              ? decodedResult.transportTaskInformation[obj.code]
+              : decodedResult.freightUnitInformation[obj.code]
+              ? decodedResult.freightUnitInformation[obj.code]
+              : decodedResult.shippingAddressInformation[obj.code]
+              ? decodedResult.shippingAddressInformation[obj.code]
+              : decodedResult.deliveryInstructions[obj.code]
+              ? decodedResult.deliveryInstructions[obj.code]
+              : decodedResult.shippingAddressInformation[obj.code]
+              ? decodedResult.shippingAddressInformation[obj.code]
+              : decodedResult.returnAddressInformation[obj.code]
+              ? decodedResult.returnAddressInformation[obj.code]
+              : decodedResult.measurements[obj.code]
+              ? decodedResult.measurements[obj.code]
+              : ""
+            : ""
+        }
       />
     );
   };
@@ -30,6 +58,15 @@ function InfoLayout({ handleInput, clear, handleClearInput, disable }) {
         color={i.color}
         clear={clear}
         disable
+        val={
+          Object.keys(decodedResult).length !== 0
+            ? decodedResult.freightUnitInformation[obj.code]
+              ? decodedResult.freightUnitInformation[obj.code]
+              : decodedResult.deliveryInstructions[obj.code]
+              ? decodedResult.deliveryInstructions[obj.code]
+              : ""
+            : ""
+        }
       />
     );
   };
@@ -76,6 +113,13 @@ function InfoLayout({ handleInput, clear, handleClearInput, disable }) {
                   clear={clear}
                   handleClearInput={handleClearInput}
                   disable
+                  val={
+                    i.id === "sscc"
+                      ? decodedResult.sscc
+                      : i.id === "urlStem"
+                      ? decodedResult.urlStem
+                      : ""
+                  }
                 />
               </Grid>
             );

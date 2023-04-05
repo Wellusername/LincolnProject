@@ -8,6 +8,7 @@ function InfoInput({
   clear,
   handleClearInput,
   disable,
+  val,
 }) {
   const [text, setText] = useState("");
 
@@ -43,7 +44,7 @@ function InfoInput({
             handleInput(e, id);
             handleLocalInput(e);
           }}
-          value={text}
+          value={!disable ? text : val}
           disabled={disable}
         />
       </Grid>

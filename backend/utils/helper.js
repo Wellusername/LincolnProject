@@ -36,7 +36,7 @@ exports.extractUriStem = (digitalLink) => {
 exports.primaryValueExtract = (digitalLink) => {
   let pathInfo = "";
   let rv = {};
-  let c = { "00": "SSCC", 402: "GSIN", 401: "GINC" };
+  let c = { "00": "sscc", 402: "gsin", 401: "ginc" };
   let digits = new RegExp("^\\d+$");
   if (digitalLink !== undefined && digitalLink !== null && digitalLink !== "") {
     var inq = digitalLink.indexOf("?");
