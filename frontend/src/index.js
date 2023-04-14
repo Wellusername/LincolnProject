@@ -7,6 +7,7 @@ import Layout from "./layouts/Navigation";
 import { createTheme, ThemeProvider } from "@mui/material";
 import EncodePage from "./pages/EncodePage";
 import ScanPage from "./pages/ScanPage";
+import NewEpicsEventPage from "./pages/NewEpicsEventPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -29,6 +30,7 @@ root.render(
           <Route path="/" element={<Layout />}>
             <Route index element={<EncodePage />} />
             <Route path="/scan" element={<ScanPage />} />
+            <Route path="/newEvent" element={<NewEpicsEventPage />} />
           </Route>
         </Routes>
       </ThemeProvider>

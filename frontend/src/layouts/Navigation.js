@@ -22,6 +22,9 @@ const Layout = () => {
             <Button variant="text" color="primary" component={Link} to="/scan">
               Scan
             </Button>
+            <Button variant="text" color="primary" component={Link} to="/newEvent">
+              New EPICS Event
+            </Button>
           </Toolbar>
         </AppBar>
       </Box>
