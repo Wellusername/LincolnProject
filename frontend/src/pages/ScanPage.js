@@ -40,6 +40,7 @@ function ScanPage() {
         <Button
           variant="outlined"
           color="primary"
+          style={{margin: 'auto auto 2rem auto', padding: '1rem 2rem'}}
           onClick={() => handleScanButton()}
         >
           Scan
@@ -49,7 +50,7 @@ function ScanPage() {
   };
 
   return (
-    <Grid container>
+    <Grid container padding='3rem'>
       <Grid item xs={12} md={6} alignContent="center">
         <Grid
           container
@@ -57,12 +58,12 @@ function ScanPage() {
           alignItems="center"
           justifyContent="center"
         >
+          {displayButton()}
           <QrCodeScanner
             scanResult={scanResult}
             handleScanResult={handleScanResult}
             scan={scan}
           />
-          {displayButton()}
         </Grid>
       </Grid>
       <Grid item xs={12} md={6}>

@@ -67,7 +67,7 @@ function InfoInputLayout({ handleInput, clear, handleClearInput }) {
   };
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} marginBottom='2rem'>
       <Grid item xs={12}>
         <Grid container spacing={0.3}>
           {primaryIdentifiers.map((i) => {

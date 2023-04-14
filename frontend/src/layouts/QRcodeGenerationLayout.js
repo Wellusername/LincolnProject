@@ -34,17 +34,27 @@ function QRcodeGenerationLayout({ info, handleClearInput, handleClearInfo }) {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography variant="h5" sx={{ fontWeight: "bold" }} textAlign="center">
+        <Typography variant="h5" sx={{ 
+            fontWeight: "bold",
+            backgroundColor: "#eee",
+            margin: '0 auto 1rem auto',
+            padding: '1rem',
+            width: '80%',
+            borderRadius: '0.5rem',
+            boxSizing: 'border-box',
+            border: '1px solid #888'
+          }} textAlign="center">
           {" "}
           URL
         </Typography>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} align='center'>
         <TextareaAutosize
           value={result.url}
           minRows={15}
           maxRows={20}
-          style={{ width: "100%" }}
+          disabled={true}
+          style={{ width: "80%", borderRadius: '1rem', resize: 'none' }}
         />
       </Grid>
       <Grid item xs={12}>

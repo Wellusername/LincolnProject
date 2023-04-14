@@ -28,22 +28,27 @@ function PullDownInputWIthAI({
   }, [clear]);
 
   return (
-    <Grid container style={{ backgroundColor: color }}>
+    <Grid container style={{ backgroundColor: color, padding: '1rem', borderRadius: '0.5rem', marginBottom: '0.5rem' }}>
       <Grid item xs={5} style={{ display: "flex", alignItems: "center" }}>
         <Typography>{label}</Typography>
       </Grid>
       <Grid item xs={6} paddingBottom={"3px"} paddingTop={"3px"}>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={!disable ? text : val}
-          onChange={handleChange}
-          style={{ backgroundColor: "white", height: "30px" }}
-          disabled={disable}
-        >
-          <MenuItem value={1}>Yes</MenuItem>
-          <MenuItem value={0}>No</MenuItem>
-        </Select>
+        {!disable &&
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={!disable ? text : val}
+            onChange={handleChange}
+            style={{ backgroundColor: "white", height: "30px" }}
+            disabled={disable}
+          >
+            <MenuItem value={1}>Yes</MenuItem>
+            <MenuItem value={0}>No</MenuItem>
+          </Select>
+        }
+        {disable &&
+          <span style={{fontWeight: 'bold'}}>{val}</span>
+        }
       </Grid>
       <Grid
         item

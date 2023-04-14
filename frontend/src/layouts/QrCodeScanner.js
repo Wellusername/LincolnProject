@@ -24,7 +24,7 @@ function QrCodeScanner({ scanResult, handleScanResult, scan }) {
           <QrReader
             ref={qrRef}
             delay={300}
-            style={{ width: "100%" }}
+            style={{ width: "100%", marginBottom: '2rem' }}
             onError={handleErrorWebCam}
             onScan={handleScan}
             willreadfrequently={"true"}
@@ -53,8 +53,8 @@ function QrCodeScanner({ scanResult, handleScanResult, scan }) {
       justifyContent="center"
     >
       <Grid item>{displayQeReader()}</Grid>
-      <Grid item>
-        <Typography textAlign={"center"} variant="h6">
+      <Grid item style={{marginBottom: '2rem', wordWrap: 'break-word', width: '80%', boxSizing: 'border-box', textAlign: 'center'}}>
+        <Typography textAlign={"center"} variant="h6" fontWeight='bold'>
           {scanResult}
         </Typography>
       </Grid>

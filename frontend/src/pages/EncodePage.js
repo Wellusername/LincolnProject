@@ -22,7 +22,7 @@ function EncodePage() {
   };
 
   return (
-    <Grid container>
+    <Grid container padding='3rem'>
       <Grid item xs={12} md={6}>
         <InfoInputLayout
           handleInput={handleInput}
