@@ -1,7 +1,8 @@
 const fs = require("fs");
 var spread_sheet = require("spread_sheet");
+const xmlConverter = require("../utils/xmlConverter");
 
-exports.generateEvent = async (req, res, next) => {
+exports.generateDigitalLink = async (req, res, next) => {
   const { epic, event } = req.body;
 
   let data = [[epic, event, new Date().toISOString()]];
@@ -19,6 +20,12 @@ exports.generateEvent = async (req, res, next) => {
     }
   });
 
+  res.status(200).json({
+    success: true,
+  });
+};
+
+exports.generateAndPersistEPICSEventsInXml = async (req, res, next) => {
   res.status(200).json({
     success: true,
   });
