@@ -1,5 +1,8 @@
+* {
+    box-sizing: border-box;
+}
+
 .title-bar {
-    font-size: 10pt;
     margin: 0;
     writing-mode: vertical-lr;
     text-orientation: upright;
@@ -8,10 +11,12 @@
 }
 
 tr {
-    font-size: 10pt;
     margin: 0;
     padding: 0;
-    border-spacing: 0;
+}
+
+.row {
+    width: 100%;
 }
 
 .row-title {
@@ -19,23 +24,32 @@ tr {
     padding: 0.5rem;
 }
 
+.content {
+    width: 100%;
+}
+
 .row-content {
+    flex: 1;
     vertical-align: top;
+    border: 1px solid #eee;
+    padding: 1rem;
+    width: 100%;
 }
 
 select, input {
-    padding: 0.3rem;
-    margin: 0.2rem;
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 0.4rem;
+    border-radius: 0.2rem;
 }
 
 button {
-    font-size: 8pt;
-    margin: auto 0.2rem;
-    padding: 0.5rem;
+    padding: 1rem;
     background-color: #a5a5a5;
     border: 0;
     color: white;
     cursor: pointer;
+    border-radius: 0.2rem;
 }
 
 button:hover {
@@ -51,6 +65,7 @@ button:hover {
     margin-top: 1rem;
     background-color: #4F6CA9;
     border-color: #4F6CA9;
+    padding: 1rem 2rem;
 }
 
 .save:hover {
@@ -60,10 +75,10 @@ button:hover {
 
 .cancel {
     margin-top: 1rem;
-    margin-left: 0.3rem;
     background-color: white;
     border: 1px solid #4F6CA9;
     color: #4F6CA9;
+    padding: 1rem 2rem;
 }
 
 .cancel:hover {
@@ -71,7 +86,6 @@ button:hover {
     color: white;
 }
 
-span {
-    margin: auto;
-    padding: 0.2rem;
+p {
+    
 }

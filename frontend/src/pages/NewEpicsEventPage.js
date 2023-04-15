@@ -113,14 +113,14 @@ function NewEpicsEventPage() {
             eventType2: eventType2,
             eventId: eventId,
 
-            declarationTime: declarationTime,
+            declarationTime: Date.parse(declarationTime),
             declarationTimeZone: declarationTimeZone,
             reason: reason,
             correctiveEventIds: correctiveEventIds,
 
-            eventTime: eventTime,
+            eventTime: Date.parse(eventTime),
             eventTimeTimeZone: eventTimeTimeZone,
-            recordTime: recordTime,
+            recordTime: Date.parse(recordTime),
             recordTimeTimeZone: recordTimeTimeZone,
 
             readPoint: readPoint,
@@ -563,7 +563,7 @@ function NewEpicsEventPage() {
         switch (value.type) {
             case 'EPCs':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeEPCs(e, value, index)} value={value.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -593,12 +593,12 @@ function NewEpicsEventPage() {
                             </optgroup>
                         </select>
                         {s4tTypeSelectContent(value, index)}
-                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
+                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
                     </div>
                 )
             case 'EPCs Output':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeEPCs(e, value, index)} value={value.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -628,12 +628,12 @@ function NewEpicsEventPage() {
                             </optgroup>
                         </select>
                         {s4tTypeSelectContent(value, index)}
-                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
+                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
                     </div>
                 )
             case 'Parent ID':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeParentId(e)} value={value.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -667,7 +667,7 @@ function NewEpicsEventPage() {
                 )
             case 'Quantities':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeQty(e, value, index)} value={value.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -685,25 +685,33 @@ function NewEpicsEventPage() {
                             </optgroup>
                         </select>
                         {s4tTypeSelectContent(value, index)}
-                        <div style={{display: 'flex'}}>
-                            <select onChange={(e) => onQuantityTypeChange(e, value, index)} value={value.quantityType}>
-                                <option value={quantityType['Fixed Measure Quantity']}>Fixed Measure Quantity</option>
-                                <option value={quantityType['Variable Measure Quantity']}>Variable Measure Quantity</option>
-                                <option value={quantityType['Unspecified Quantity']}>Unspecified Quantity</option>
-                            </select>
+                        <div style={{backgroundColor: '#ddd', padding: '1rem', marginTop: '2rem'}}>
+                            <div style={{display: 'flex'}}>
+                                <select onChange={(e) => onQuantityTypeChange(e, value, index)} value={value.quantityType}>
+                                    <option value={quantityType['Fixed Measure Quantity']}>Fixed Measure Quantity</option>
+                                    <option value={quantityType['Variable Measure Quantity']}>Variable Measure Quantity</option>
+                                    <option value={quantityType['Unspecified Quantity']}>Unspecified Quantity</option>
+                                </select>
+                            </div>
+                            {(value.quantityType === quantityType['Fixed Measure Quantity'] || value.quantityType === quantityType['Variable Measure Quantity']) &&
+                                <React.Fragment>
+                                    <p>Quantity</p>
+                                    <input type='text' value={value.quantity} placeholder='Quantity' onChange={(e) => onQuantityChange(e, value, index)} />
+                                </React.Fragment>
+                            }
+                            {(value.quantityType === quantityType['Variable Measure Quantity']) &&
+                                <React.Fragment>
+                                    <p>UOM</p>
+                                    <input type='text' value={value.uom} placeholder='UOM' onChange={(e) => onUOMChange(e, value, index)} />
+                                </React.Fragment>
+                            }
                         </div>
-                        {(value.quantityType === quantityType['Fixed Measure Quantity'] || value.quantityType === quantityType['Variable Measure Quantity']) &&
-                            <input type='text' value={value.quantity} placeholder='Quantity' onChange={(e) => onQuantityChange(e, value, index)} />
-                        }
-                        {(value.quantityType === quantityType['Variable Measure Quantity']) &&
-                            <input type='text' value={value.uom} placeholder='UOM' onChange={(e) => onUOMChange(e, value, index)} />
-                        }
-                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
+                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
                     </div>
                 )
             case 'Quantities Output':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeQty(e, value, index)} value={value.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -721,25 +729,33 @@ function NewEpicsEventPage() {
                             </optgroup>
                         </select>
                         {s4tTypeSelectContent(value, index)}
-                        <div style={{display: 'flex'}}>
-                            <select onChange={(e) => onQuantityTypeChange(e, value, index)} value={value.quantityType}>
-                                <option value={quantityType['Fixed Measure Quantity']}>Fixed Measure Quantity</option>
-                                <option value={quantityType['Variable Measure Quantity']}>Variable Measure Quantity</option>
-                                <option value={quantityType['Unspecified Quantity']}>Unspecified Quantity</option>
-                            </select>
+                        <div style={{backgroundColor: '#ddd', padding: '1rem', marginTop: '2rem'}}>
+                            <div style={{display: 'flex'}}>
+                                <select onChange={(e) => onQuantityTypeChange(e, value, index)} value={value.quantityType}>
+                                    <option value={quantityType['Fixed Measure Quantity']}>Fixed Measure Quantity</option>
+                                    <option value={quantityType['Variable Measure Quantity']}>Variable Measure Quantity</option>
+                                    <option value={quantityType['Unspecified Quantity']}>Unspecified Quantity</option>
+                                </select>
+                            </div>
+                            {(value.quantityType === quantityType['Fixed Measure Quantity'] || value.quantityType === quantityType['Variable Measure Quantity']) &&
+                                <React.Fragment>
+                                    <p>Quantity</p>
+                                    <input type='text' value={value.quantity} placeholder='Quantity' onChange={(e) => onQuantityChange(e, value, index)} />
+                                </React.Fragment>
+                            }
+                            {(value.quantityType === quantityType['Variable Measure Quantity']) &&
+                                <React.Fragment>
+                                    <p>UOM</p>
+                                    <input type='text' value={value.uom} placeholder='UOM' onChange={(e) => onUOMChange(e, value, index)} />
+                                </React.Fragment>
+                            }
                         </div>
-                        {(value.quantityType === quantityType['Fixed Measure Quantity'] || value.quantityType === quantityType['Variable Measure Quantity']) &&
-                            <input type='text' value={value.quantity} placeholder='Quantity' onChange={(e) => onQuantityChange(e, value, index)} />
-                        }
-                        {(value.quantityType === quantityType['Variable Measure Quantity']) &&
-                            <input type='text' value={value.uom} placeholder='UOM' onChange={(e) => onUOMChange(e, value, index)} />
-                        }
-                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
+                        <button onClick={() => onS4tTypeDelete(value, index)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
                     </div>
                 )
             case 'Quantity':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeQty(e, value, index)} value={value.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -757,12 +773,14 @@ function NewEpicsEventPage() {
                             </optgroup>
                         </select>
                         {s4tTypeSelectContent(value, index)}
-                        <input type='text' value={value.quantity} placeholder='Quantity' onChange={(e) => onQuantityChange(e, value, index)} />
+                        <div style={{backgroundColor: '#ddd', padding: '1rem', marginTop: '2rem'}}>
+                            <input type='text' value={value.quantity} placeholder='Quantity' onChange={(e) => onQuantityChange(e, value, index)} />
+                        </div>
                     </div>
                 )
             case 'Read Point':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeReadPoint(e)} value={readPoint.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -777,7 +795,7 @@ function NewEpicsEventPage() {
                 )
             case 'Business Location':
                 return (
-                    <div style={{display: 'flex'}}>
+                    <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
                         <select onChange={(e) => onS4tTypeSelectChangeBusinessLocation(e)} value={businessLocation.s4tType}>
                             <option value="null">Choose...</option>
                             <optgroup label="GS1 Key">
@@ -812,12 +830,12 @@ function NewEpicsEventPage() {
         switch (value.s4tType) {
             case s4tType.sgtin:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(01)</span>
+                    <div>
+                        <p>(01)</p>
                         <input type='text' value={value.Al01} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al01')} />
-                        <span>(21)</span>
+                        <p>(21)</p>
                         <input type='text' value={value.Al02} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al02')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -825,10 +843,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.sscc:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(00)</span>
+                    <div>
+                        <p>(00)</p>
                         <input type='text' value={value.Al00} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al00')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -836,10 +854,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.grai:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(8003) 0</span>
+                    <div>
+                        <p>(8003) 0</p>
                         <input type='text' value={value.Al8003} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al8003')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -847,10 +865,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.giai:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(8004)</span>
+                    <div>
+                        <p>(8004)</p>
                         <input type='text' value={value.Al8004} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al8004')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -858,10 +876,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.gsrn:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(8018)</span>
+                    <div>
+                        <p>(8018)</p>
                         <input type='text' value={value.Al8018} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al8018')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -869,10 +887,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.gsrnp:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(8017)</span>
+                    <div>
+                        <p>(8017)</p>
                         <input type='text' value={value.Al8017} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al8017')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -880,10 +898,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.gdti:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(253)</span>
+                    <div>
+                        <p>(253)</p>
                         <input type='text' value={value.Al253} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al253')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -891,10 +909,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.sgcn:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(255)</span>
+                    <div>
+                        <p>(255)</p>
                         <input type='text' value={value.Al255} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al255')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -902,12 +920,12 @@ function NewEpicsEventPage() {
                 )
             case s4tType.cpi:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(8010)</span>
+                    <div>
+                        <p>(8010)</p>
                         <input type='text' value={value.Al8010} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al8010')} />
-                        <span>(8011)</span>
+                        <p>(8011)</p>
                         <input type='text' value={value.Al8011} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al8011')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -915,10 +933,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.ginc:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(401)</span>
+                    <div>
+                        <p>(401)</p>
                         <input type='text' value={value.Al401} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al401')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -926,10 +944,10 @@ function NewEpicsEventPage() {
                 )
             case s4tType.gsin:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(402)</span>
+                    <div>
+                        <p>(402)</p>
                         <input type='text' value={value.Al402} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al402')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -937,12 +955,12 @@ function NewEpicsEventPage() {
                 )
             case s4tType.itip:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(8006)</span>
+                    <div>
+                        <p>(8006)</p>
                         <input type='text' value={value.Al8006} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al8006')} />
-                        <span>(21)</span>
+                        <p>(21)</p>
                         <input type='text' value={value.Al21} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al21')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -950,12 +968,12 @@ function NewEpicsEventPage() {
                 )
             case s4tType.upui:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(01)</span>
+                    <div>
+                        <p>(01)</p>
                         <input type='text' value={value.Al01} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al01')} />
-                        <span>(235)</span>
+                        <p>(235)</p>
                         <input type='text' value={value.Al235} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al235')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -963,64 +981,64 @@ function NewEpicsEventPage() {
                 )
             case s4tType.gid:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>Mgr</span>
+                    <div>
+                        <p>Mgr</p>
                         <input type='text' value={value.Mgr} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Mgr')} />
-                        <span>Class</span>
+                        <p>Class</p>
                         <input type='text' value={value.Class} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Class')} />
-                        <span>Ser</span>
+                        <p>Ser</p>
                         <input type='text' value={value.Ser} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Ser')} />
                     </div>
                 )
             case s4tType.usdod:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>CAGE/DoDAAC</span>
+                    <div>
+                        <p>CAGE/DoDAAC</p>
                         <input type='text' value={value['CAGE/DoDAAC']} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'CAGE/DoDAAC')} />
-                        <span>Serial</span>
+                        <p>Serial</p>
                         <input type='text' value={value.Serial} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Serial')} />
                     </div>
                 )
             case s4tType.adi:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>CAGE/DoDAAC</span>
+                    <div>
+                        <p>CAGE/DoDAAC</p>
                         <input type='text' value={value['CAGE/DoDAAC']} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'CAGE/DoDAAC')} />
-                        <span>PNO</span>
+                        <p>PNO</p>
                         <input type='text' value={value.PNO} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'PNO')} />
-                        <span>SER</span>
+                        <p>SER</p>
                         <input type='text' value={value.SER} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'SER')} />
                     </div>
                 )
             case s4tType.bic:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>BIC</span>
+                    <div>
+                        <p>BIC</p>
                         <input type='text' value={value.BIC} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'BIC')} />
                     </div>
                 )
             case s4tType.imovn:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>IMOVN</span>
+                    <div>
+                        <p>IMOVN</p>
                         <input type='text' value={value.IMOVN} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'IMOVN')} />
                     </div>
                 )
             case s4tType.uri:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>URI</span>
+                    <div>
+                        <p>URI</p>
                         <input type='text' value={value.URI} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'URI')} />
                     </div>
                 )
             case s4tType.lgtin:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(01)</span>
+                    <div>
+                        <p>(01)</p>
                         <input type='text' value={value.Al01} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al01')} />
-                        <span>(10)</span>
+                        <p>(10)</p>
                         <input type='text' value={value.Al10} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al10')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -1028,12 +1046,12 @@ function NewEpicsEventPage() {
                 )
             case s4tType.sgln:
                 return (
-                    <div style={{display: 'flex'}}>
-                        <span>(414)</span>
+                    <div>
+                        <p>(414)</p>
                         <input type='text' value={value.Al414} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al414')} />
-                        <span>(254)</span>
+                        <p>(254)</p>
                         <input type='text' value={value.Al254} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'Al254')} />
-                        <span>GS1 Company Prefix Length</span>
+                        <p>GS1 Company Prefix Length</p>
                         <select value={value.GS1CompanyPrefix} onChange={(e) => s4tTypeSelectContentChange(e, value, index, 'GS1CompanyPrefix')}>
                             {optionDigits()}
                         </select>
@@ -1163,7 +1181,7 @@ function NewEpicsEventPage() {
 
     return (
         <Grid container padding='3rem'>
-            <Grid item xs={12} md={6} align='center'>
+            <Grid item xs={12} sm={12} md={12} lg={6} align='center'>
                 {displayButton()}
                 <QrCodeScanner
                     scanResult={scanResult}
@@ -1171,39 +1189,29 @@ function NewEpicsEventPage() {
                     scan={scan}
                 />
             </Grid>
-            <Grid item xs={12} md={6}>
-                <table>
+            <Grid item xs={12} sm={12} md={12} lg={6}>
+                <table style={{width: '100%'}}>
                     <tbody>
-                        <tr>
+                        <tr style={{display: 'flex'}}>
                             <td style={{backgroundColor: '#868384'}}>
-                                <div className='title-bar'></div>
+                                <div className='title-bar'>X</div>
                             </td>
-                            <td>
+                            <td className='content'>
                                 <tr className='row'>
                                     <td className='row-title' style={{backgroundColor: '#e7e6e6'}}>
                                         Event type
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <select onChange={(e) => setEventType1(e.target.value)} value={eventType1}>
-                                                            {
-                                                                Object.values(EventType1).map((event, i) => <option key={i}>{event}</option>)
-                                                            }
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <select onChange={(e) => setEventType2(e.target.value)} value={eventType2}>
-                                                            {
-                                                                Object.values(EventType2).map((type, i) => <option key={i}>{type}</option>)
-                                                            }
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <select onChange={(e) => setEventType1(e.target.value)} value={eventType1}>
+                                            {
+                                                Object.values(EventType1).map((event, i) => <option key={i}>{event}</option>)
+                                            }
+                                        </select>
+                                        <select onChange={(e) => setEventType2(e.target.value)} value={eventType2}>
+                                            {
+                                                Object.values(EventType2).map((type, i) => <option key={i}>{type}</option>)
+                                            }
+                                        </select>
                                     </td>
                                 </tr>
                                 {(eventType1 === EventType1.objectEvent || eventType1 === EventType1.agrigationEvent || eventType1 === EventType1.transactionEvent) &&
@@ -1212,19 +1220,11 @@ function NewEpicsEventPage() {
                                             Action
                                         </td>
                                         <td className='row-content'>
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <select onChange={(e) => setAction(e.target.value)} value={action}>
-                                                                {
-                                                                    Object.values(Action).map((action, i) => <option key={i}>{action}</option>)
-                                                                }
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <select onChange={(e) => setAction(e.target.value)} value={action}>
+                                                {
+                                                    Object.values(Action).map((action, i) => <option key={i}>{action}</option>)
+                                                }
+                                            </select>
                                         </td>
                                     </tr>
                                 }
@@ -1233,50 +1233,33 @@ function NewEpicsEventPage() {
                                         Event ID
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <input style={{width: '25rem'}} type='text' placeholder='Enter on Event ID (seldom needed - see FAQ)' value={eventId} onChange={(e) => setEventId(e.target.value)}></input>
-                                                    </td>
-                                                    <td style={{display: 'flex'}}>
-                                                        <button onClick={generate}>GENERATE</button>
-                                                        <p className='hint'>WAIT! Leave this blank in most cases; see the FAQ.</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <input type='text' placeholder='Enter on Event ID (seldom needed - see FAQ)' value={eventId} onChange={(e) => setEventId(e.target.value)}></input>
+                                        <button style={{width: '100%'}} onClick={generate}>GENERATE</button>
+                                        <p className='hint'>WAIT! Leave this blank in most cases; see the FAQ.</p>
                                     </td>
                                 </tr>
                             </td>
                         </tr>
                         {eventType2 === EventType2.errorDeclaration &&
-                            <tr>
+                            <tr style={{display: 'flex'}}>
                                 <td style={{backgroundColor: '#cc0000'}}>
                                     <div className='title-bar'>ERR</div>
                                 </td>
-                                <td>
+                                <td className='content'>
                                     <tr className='row'>
                                         <td className='row-title' style={{backgroundColor: '#F2C2CC'}}>
                                             Declaration Time
                                         </td>
                                         <td className='row-content'>
-                                            <table>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <input type='date' value={declarationTime} onChange={(e) => setDeclarationTime(e.target.value)}></input>
-                                                        </td>
-                                                        <td style={{display: 'flex'}}>
-                                                            <select onChange={(e) => setDeclarationTimeZone(e.target.value)} value={declarationTimeZone}>
-                                                                {
-                                                                    timezones.map((t, i) => <option key={i}>{t}</option>)
-                                                                }
-                                                            </select>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            {declarationTime &&
+                                                <p>{declarationTime} 00:00:00</p>
+                                            }
+                                            <input type='date' value={declarationTime} onChange={(e) => setDeclarationTime(e.target.value)}></input>
+                                            <select onChange={(e) => setDeclarationTimeZone(e.target.value)} value={declarationTimeZone}>
+                                                {
+                                                    timezones.map((t, i) => <option key={i}>{t}</option>)
+                                                }
+                                            </select>
                                         </td>
                                     </tr>
                                     <tr className='row'>
@@ -1284,11 +1267,7 @@ function NewEpicsEventPage() {
                                             Reason
                                         </td>
                                         <td className='row-content'>
-                                            <table>
-                                                <tbody>
-                                                    <input type='text' value={reason} onChange={(e) => setReason(e.target.value)} placeholder='Enter a reason URI'></input>
-                                                </tbody>
-                                            </table>
+                                            <input type='text' value={reason} onChange={(e) => setReason(e.target.value)} placeholder='Enter a reason URI'></input>
                                         </td>
                                     </tr>
                                     <tr className='row'>
@@ -1296,90 +1275,72 @@ function NewEpicsEventPage() {
                                             Corrective Event IDs
                                         </td>
                                         <td className='row-content'>
-                                            <table>
-                                                <tbody>
-                                                    {
-                                                        correctiveEventIds.map((ids, i) => {
-                                                            return (
-                                                                <div>
-                                                                    <input key={i} placeholder='Enter an event ID' value={correctiveEventIds[i]} onChange={(e) => onChangeCorrectiveEventIdsAddAnother(e, i)}></input>
-                                                                    <button onClick={() => onDeleteCorrectiveEventIds(i)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    }
-                                                    <button onClick={onCorrectiveEventIdsAddAnother}>ADD ANOTHER</button>
-                                                </tbody>
-                                            </table>
+                                            {
+                                                correctiveEventIds.map((ids, i) => {
+                                                    return (
+                                                        <div style={{backgroundColor: '#eee', padding: '1rem', marginBottom: '0.5rem'}}>
+                                                            <input key={i} placeholder='Enter an event ID' value={correctiveEventIds[i]} onChange={(e) => onChangeCorrectiveEventIdsAddAnother(e, i)}></input>
+                                                            <button onClick={() => onDeleteCorrectiveEventIds(i)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            <button style={{width: '100%'}} onClick={onCorrectiveEventIdsAddAnother}>ADD ANOTHER</button>
                                         </td>
                                     </tr>
                                 </td>
                             </tr>
                         }
-                        <tr>
+                        <tr style={{display: 'flex'}}>
                             <td style={{backgroundColor: '#a854a8'}}>
                                 <div className='title-bar'>WHEN</div>
                             </td>
-                            <td>
+                            <td className='content'>
                                 <tr className='row'>
                                     <td className='row-title' style={{backgroundColor: '#eedded'}}>
-                                        Event type
+                                        Event Time
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <input type='date' value={eventTime} onChange={(e) => setEventTime(e.target.value)}></input>
-                                                    </td>
-                                                    <td style={{display: 'flex'}}>
-                                                        <select onChange={(e) => setEventTimeTimeZone(e.target.value)} value={eventTimeTimeZone}>
-                                                            {
-                                                                timezones.map((t, i) => <option key={i}>{t}</option>)
-                                                            }
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        {eventTime &&
+                                            <p>{eventTime} 00:00:00</p>
+                                        }
+                                        <input type='date' value={eventTime} onChange={(e) => setEventTime(e.target.value)}></input>
+                                        <select onChange={(e) => setEventTimeTimeZone(e.target.value)} value={eventTimeTimeZone}>
+                                            {
+                                                timezones.map((t, i) => <option key={i}>{t}</option>)
+                                            }
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr className='row'>
                                     <td className='row-title' style={{backgroundColor: '#eedded'}}>
-                                        Event type
+                                        Record Time
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <input type='date' value={recordTime} onChange={(e) => setRecordTime(e.target.value)}></input>
-                                                    </td>
-                                                    <td style={{display: 'flex'}}>
-                                                        <select onChange={(e) => setRecordTimeTimeZone(e.target.value)} value={recordTimeTimeZone}>
-                                                            {
-                                                                timezones.map((t, i) => <option key={i}>{t}</option>)
-                                                            }
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        {recordTime &&
+                                            <p>{recordTime} 00:00:00</p>
+                                        }
+                                        <input type='date' value={recordTime} onChange={(e) => setRecordTime(e.target.value)}></input>
+                                        <select onChange={(e) => setRecordTimeTimeZone(e.target.value)} value={recordTimeTimeZone}>
+                                            {
+                                                timezones.map((t, i) => <option key={i}>{t}</option>)
+                                            }
+                                        </select>
                                     </td>
                                 </tr>
                             </td>
                         </tr>
-                        <tr>
+                        <tr style={{display: 'flex'}}>
                             <td style={{backgroundColor: '#607fbf'}}>
                                 <div className='title-bar'>WHAT</div>
                             </td>
-                            <td>
+                            <td className='content'>
                                 {eventType1 === EventType1.choose &&
                                     <tr className='row'>
                                         <td className='row-title' style={{backgroundColor: '#dfe5f1'}}>
                                         </td>
                                         <td className='row-content' style={{height: '73.19px'}}>
-                                            <p style={{margin: '0.1rem'}}>Please choose an event type, above</p>
+                                            <p style={{margin: '0.3rem'}}>Please choose an event type, above</p>
                                         </td>
                                     </tr>
                                 }
@@ -1390,27 +1351,19 @@ function NewEpicsEventPage() {
                                                 EPCs
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    ePCs.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    ePCs.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1418,27 +1371,19 @@ function NewEpicsEventPage() {
                                                 Quantities
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    quantities.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    quantities.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                     </React.Fragment>
@@ -1450,15 +1395,7 @@ function NewEpicsEventPage() {
                                                 Parent ID
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {s4tTypeSelect(parentId, 0)}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {s4tTypeSelect(parentId, 0)}
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1466,27 +1403,19 @@ function NewEpicsEventPage() {
                                                 Child EPCs
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    ePCs.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    ePCs.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1494,27 +1423,19 @@ function NewEpicsEventPage() {
                                                 Child Quantities
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    quantities.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
-                                                                </div>   
-                                                            </td>    
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    quantities.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
+                                                </div>  
                                             </td>
                                         </tr>
                                     </React.Fragment>
@@ -1526,15 +1447,7 @@ function NewEpicsEventPage() {
                                                 Parent ID
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {s4tTypeSelect(parentId, 0)}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {s4tTypeSelect(parentId, 0)}
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1542,27 +1455,19 @@ function NewEpicsEventPage() {
                                                 EPCs
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    ePCs.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    ePCs.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1570,27 +1475,19 @@ function NewEpicsEventPage() {
                                                 Quantities
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    quantities.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    quantities.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                     </React.Fragment>
@@ -1602,15 +1499,7 @@ function NewEpicsEventPage() {
                                                 Xform ID
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <input type='text' placeholder='Enter a Transformation ID URI (optional)' value={xformId} onChange={(e) => setXformId(e.target.value)} />
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                <input type='text' placeholder='Enter a Transformation ID URI (optional)' value={xformId} onChange={(e) => setXformId(e.target.value)} />
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1618,27 +1507,19 @@ function NewEpicsEventPage() {
                                                 Input EPCs
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    ePCs.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    ePCs.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onEPCsAddAnother('EPCs')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1646,27 +1527,19 @@ function NewEpicsEventPage() {
                                                 Input Quantities
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    quantities.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    quantities.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onQuantitiesAddAnother('Quantities')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1674,27 +1547,19 @@ function NewEpicsEventPage() {
                                                 Output EPCs
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    ePCsOutput.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onEPCsAddAnother('EPCs Output')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    ePCsOutput.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onEPCsAddAnother('EPCs Output')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers unique to a single object (“instance-level” or “serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1702,27 +1567,19 @@ function NewEpicsEventPage() {
                                                 Output Quantities
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    quantitiesOutput.map((x, i) => {
-                                                                        return (
-                                                                            <div key={i}>
-                                                                                {s4tTypeSelect(x, i)}
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <div style={{display: 'flex'}}>
-                                                                    <button onClick={() => onQuantitiesAddAnother('Quantities Output')}>ADD ANOTHER</button>
-                                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    quantitiesOutput.map((x, i) => {
+                                                        return (
+                                                            <div key={i}>
+                                                                {s4tTypeSelect(x, i)}
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <div>
+                                                    <button style={{width: '100%'}} onClick={() => onQuantitiesAddAnother('Quantities Output')}>ADD ANOTHER</button>
+                                                    <p className='hint'>Use this for identifiers shared by multiple objects (“lot-level,” “class-level” or “non-serialized” identifiers)</p>
+                                                </div>
                                             </td>
                                         </tr>
                                     </React.Fragment>
@@ -1734,40 +1591,24 @@ function NewEpicsEventPage() {
                                                 Quantity
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {s4tTypeSelect(quantity, 0)}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {s4tTypeSelect(quantity, 0)}
                                             </td>
                                         </tr>
                                     </React.Fragment>
                                 }
                             </td>
                         </tr>
-                        <tr>
+                        <tr style={{display: 'flex'}}>
                             <td style={{backgroundColor: '#478f77'}}>
                                 <div className='title-bar'>WHERE</div>
                             </td>
-                            <td>
+                            <td className='content'>
                                 <tr className='row'>
                                     <td className='row-title' style={{backgroundColor: '#dae9e4'}}>
                                         Read Point
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        {s4tTypeSelect(readPoint, 0)}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        {s4tTypeSelect(readPoint, 0)}
                                     </td>
                                 </tr>
                                 <tr className='row'>
@@ -1775,38 +1616,22 @@ function NewEpicsEventPage() {
                                         Business Location
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        {s4tTypeSelect(businessLocation, 0)}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        {s4tTypeSelect(businessLocation, 0)}
                                     </td>
                                 </tr>
                             </td>
                         </tr>
-                        <tr>
+                        <tr style={{display: 'flex'}}>
                             <td style={{backgroundColor: '#e6c72e'}}>
                                 <div className='title-bar'>WHY</div>
                             </td>
-                            <td>
+                            <td className='content'>
                                 <tr className='row'>
                                     <td className='row-title' style={{backgroundColor: '#faf4d5'}}>
                                         Business Step
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <input type='text' value={businessStep} placeholder='Enter a business step URI' onChange={(e) => setBusinessStep(e.target.value)} />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <input type='text' value={businessStep} placeholder='Enter a business step URI' onChange={(e) => setBusinessStep(e.target.value)} />
                                     </td>
                                 </tr>
                                 <tr className='row'>
@@ -1814,15 +1639,7 @@ function NewEpicsEventPage() {
                                         Disposition
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <input type='text' value={disposition} placeholder='Enter a disposition URI' onChange={(e) => setDisposition(e.target.value)} />
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        <input type='text' value={disposition} placeholder='Enter a disposition URI' onChange={(e) => setDisposition(e.target.value)} />
                                     </td>
                                 </tr>
                                 <tr className='row'>
@@ -1830,26 +1647,18 @@ function NewEpicsEventPage() {
                                         Biz Transactions
                                     </td>
                                     <td className='row-content'>
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        {
-                                                            bizTransactions.map((b, i) => {
-                                                                return (
-                                                                    <div key={i} style={{display: 'flex'}}>
-                                                                        <input type='text' placeholder='Enter business transaction type (optional)' value={b.businessTransactionType} onChange={(e) => onBusinessTransactionTypeChange(e, i)}/>
-                                                                        <input type='text' placeholder='Enter a business transaction URI' value={b.businessTransactionURI} onChange={(e) => onBusinessTransactionURIChange(e, i)} />
-                                                                        <button onClick={() => onDeleteBusinessTransaction(i)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                        <button onClick={() => onBusinessTransactionAddAnother()}>ADD ANOTHER</button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        {
+                                            bizTransactions.map((b, i) => {
+                                                return (
+                                                    <div key={i} style={{backgroundColor: '#eee', marginBottom: '0.5rem', padding: '1rem'}}>
+                                                        <input type='text' placeholder='Enter business transaction type (optional)' value={b.businessTransactionType} onChange={(e) => onBusinessTransactionTypeChange(e, i)}/>
+                                                        <input type='text' placeholder='Enter a business transaction URI' value={b.businessTransactionURI} onChange={(e) => onBusinessTransactionURIChange(e, i)} />
+                                                        <button onClick={() => onDeleteBusinessTransaction(i)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                        <button style={{width: '100%'}} onClick={() => onBusinessTransactionAddAnother()}>ADD ANOTHER</button>
                                     </td>
                                 </tr>
                                 {(eventType1 !== EventType1.transformationEvent && eventType1 !== EventType1.quantityEvent && eventType1 !== EventType1.choose) &&
@@ -1859,26 +1668,18 @@ function NewEpicsEventPage() {
                                                 Sources
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    sources.map((s, i) => {
-                                                                        return (
-                                                                            <div key={i} style={{display: 'flex'}}>
-                                                                                <input type='text' placeholder='Enter a source type' value={s.sourceType} onChange={(e) => onSourcesTypeChange(e, i)}/>
-                                                                                <input type='text' placeholder='Enter a source URI' value={s.sourceURI} onChange={(e) => onSourcesURIChange(e, i)} />
-                                                                                <button onClick={() => onDeleteSource(i)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <button onClick={() => onSourcesAddAnother()}>ADD ANOTHER</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    sources.map((s, i) => {
+                                                        return (
+                                                            <div key={i} style={{ backgroundColor: '#eee', marginBottom: '0.5rem', padding: '1rem'}}>
+                                                                <input type='text' placeholder='Enter a source type' value={s.sourceType} onChange={(e) => onSourcesTypeChange(e, i)}/>
+                                                                <input type='text' placeholder='Enter a source URI' value={s.sourceURI} onChange={(e) => onSourcesURIChange(e, i)} />
+                                                                <button onClick={() => onDeleteSource(i)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <button style={{width: '100%'}} onClick={() => onSourcesAddAnother()}>ADD ANOTHER</button>
                                             </td>
                                         </tr>
                                         <tr className='row'>
@@ -1886,26 +1687,18 @@ function NewEpicsEventPage() {
                                                 Destinations
                                             </td>
                                             <td className='row-content'>
-                                                <table>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                {
-                                                                    destinations.map((s, i) => {
-                                                                        return (
-                                                                            <div key={i} style={{display: 'flex'}}>
-                                                                                <input type='text' placeholder='Enter a source type' value={s.sourceType} onChange={(e) => onDestinationsTypeChange(e, i)}/>
-                                                                                <input type='text' placeholder='Enter a source URI' value={s.sourceURI} onChange={(e) => onDestinationsURIChange(e, i)} />
-                                                                                <button onClick={() => onDeleteDestination(i)} style={{backgroundColor: '#d9534f', marginLeft: '0.5rem'}}>DELETE</button>
-                                                                            </div>
-                                                                        )
-                                                                    })
-                                                                }
-                                                                <button onClick={() => onDestinationsAddAnother()}>ADD ANOTHER</button>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                {
+                                                    destinations.map((s, i) => {
+                                                        return (
+                                                            <div key={i} style={{backgroundColor: '#eee', marginBottom: '0.5rem', padding: '1rem'}}>
+                                                                <input type='text' placeholder='Enter a source type' value={s.sourceType} onChange={(e) => onDestinationsTypeChange(e, i)}/>
+                                                                <input type='text' placeholder='Enter a source URI' value={s.sourceURI} onChange={(e) => onDestinationsURIChange(e, i)} />
+                                                                <button onClick={() => onDeleteDestination(i)} style={{backgroundColor: '#d9534f', width: '100%'}}>DELETE</button>
+                                                            </div>
+                                                        )
+                                                    })
+                                                }
+                                                <button style={{width: '100%'}} onClick={() => onDestinationsAddAnother()}>ADD ANOTHER</button>
                                             </td>
                                         </tr>
                                     </React.Fragment>
@@ -1914,8 +1707,8 @@ function NewEpicsEventPage() {
                         </tr>
                     </tbody>
                 </table>
-                <button onClick={save} className='save'>SAVE</button>
-                <button onClick={cancel} className='cancel'>CANCEL</button>
+                <button style={{width: '100%'}} onClick={save} className='save'>SAVE</button>
+                <button style={{width: '100%'}} onClick={cancel} className='cancel'>CANCEL</button>
             </Grid>
         </Grid>
     )
