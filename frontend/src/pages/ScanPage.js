@@ -27,7 +27,7 @@ function ScanPage() {
           setDecodedResult(res.info);
           setScan(false);
         } else {
-          console.log(res.message);
+          alert(res.message);
         }
       });
     }
@@ -40,7 +40,7 @@ function ScanPage() {
         <Button
           variant="outlined"
           color="primary"
-          style={{margin: 'auto auto 2rem auto', padding: '1rem 2rem'}}
+          style={{ margin: "auto auto 2rem auto", padding: "1rem 2rem" }}
           onClick={() => handleScanButton()}
         >
           Scan
@@ -50,7 +50,7 @@ function ScanPage() {
   };
 
   return (
-    <Grid container padding='3rem'>
+    <Grid container padding="3rem">
       <Grid item xs={12} md={6} alignContent="center">
         <Grid
           container
