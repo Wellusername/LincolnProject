@@ -31,30 +31,53 @@ function QRcodeGenerationLayout({ info, handleClearInput, handleClearInfo }) {
     }
   }, [result]);
 
+  const handleValidation = () => {
+    try {
+      const val = Object.values(info);
+      getUrlAndQRcode(info)
+        .then((res) => {
+          console.log(res);
+          if (res.success) {
+            alert("Valid Input");
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          alert(e.response.data.message);
+        });
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Typography variant="h5" sx={{ 
+        <Typography
+          variant="h5"
+          sx={{
             fontWeight: "bold",
             backgroundColor: "#eee",
-            margin: '0 auto 1rem auto',
-            padding: '1rem',
-            width: '80%',
-            borderRadius: '0.5rem',
-            boxSizing: 'border-box',
-            border: '1px solid #888'
-          }} textAlign="center">
+            margin: "0 auto 1rem auto",
+            padding: "1rem",
+            width: "80%",
+            borderRadius: "0.5rem",
+            boxSizing: "border-box",
+            border: "1px solid #888",
+          }}
+          textAlign="center"
+        >
           {" "}
           URL
         </Typography>
       </Grid>
-      <Grid item xs={12} align='center'>
+      <Grid item xs={12} align="center">
         <TextareaAutosize
           value={result.url}
           minRows={15}
           maxRows={20}
           disabled={true}
-          style={{ width: "80%", borderRadius: '1rem', resize: 'none' }}
+          style={{ width: "80%", borderRadius: "1rem", resize: "none" }}
         />
       </Grid>
       <Grid item xs={12}>
@@ -92,8 +115,9 @@ function QRcodeGenerationLayout({ info, handleClearInput, handleClearInfo }) {
             variant="outlined"
             style={{ minWidth: "100%" }}
             disabled={!generatedURL}
+            onClick={() => handleValidation()}
           >
-            Generate
+            validation
           </Button>
         </Grid>
         <Grid item xs={2} />
