@@ -8,32 +8,78 @@ const epciEventDocument = {
 
 exports.convertToObjectEventXml = (eventJson) => {
   const xmlBuilder = new xml2js.Builder({ rootName: "epcis:EPCISDocument" });
+  let objectEvent = {
+    eventTime: eventJson.eventTime,
+    recordTime: eventJson.recordTime,
+    eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
+    ...eventJson.baseExtension,
+    epcList: { epc: eventJson.epcList },
+    action: eventJson.action,
+  };
+
+  if (eventJson.bizStep !== undefined) {
+    objectEvent = { ...objectEvent, bizStep: eventJson.bizStep };
+  }
+
+  if (eventJson.disposition !== undefined) {
+    objectEvent = { ...objectEvent, disposition: eventJson.disposition };
+  }
+
+  if (eventJson.readPoint !== undefined) {
+    objectEvent = {
+      ...objectEvent,
+      readPoint: {
+        id: eventJson.readPoint,
+      },
+    };
+  }
+  if (eventJson.bizLocation !== undefined) {
+    objectEvent = {
+      ...objectEvent,
+      bizLocation: {
+        id: eventJson.bizLocation,
+      },
+    };
+  }
+
+  if (eventJson.bizTransactions !== undefined) {
+    objectEvent = {
+      ...objectEvent,
+      bizTransactionList: { bizTransaction: eventJson.bizTransactions },
+    };
+  }
+
+  let extensions = {};
+
+  if (eventJson.quantityList !== undefined) {
+    extensions = {
+      ...extensions,
+      quantityList: eventJson.quantityList,
+    };
+  }
+  if (eventJson.sourceList !== undefined) {
+    extensions = {
+      ...extensions,
+      sourceList: { sourceList: eventJson.sourceList },
+    };
+  }
+
+  if (eventJson.destinationList !== undefined) {
+    extensions = {
+      ...extensions,
+      destinationList: { destinationList: eventJson.destinationList },
+    };
+  }
+
+  if (extensions !== {}) {
+    objectEvent = { ...objectEvent, extension: extensions };
+  }
+
   const epcisDocument = {
     $: epciEventDocument,
     EPCISBody: {
       EventList: {
-        ObjectEvent: {
-          eventTime: eventJson.eventTime,
-          recordTime: eventJson.recordTime,
-          eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
-          ...eventJson.baseExtension,
-          epcList: eventJson.epcList,
-          action: eventJson.action,
-          bizStep: eventJson.bizStep,
-          disposition: eventJson.disposition,
-          readPoint: {
-            id: eventJson.readPoint,
-          },
-          bizLocation: {
-            id: eventJson.bizLocation,
-          },
-          bizTransactionList: eventJson.bizTransactionList,
-          extension: {
-            quantityList: eventJson.quantityList,
-            sourceList: eventJson.sourceList,
-            destinationList: eventJson.destinationList,
-          },
-        },
+        ObjectEvent: objectEvent,
       },
     },
   };
@@ -43,33 +89,83 @@ exports.convertToObjectEventXml = (eventJson) => {
 
 exports.convertToAggregationEventXml = (eventJson) => {
   const xmlBuilder = new xml2js.Builder({ rootName: "epcis:EPCISDocument" });
+  let aggregationEvent = {
+    eventTime: eventJson.eventTime,
+    recordTime: eventJson.recordTime,
+    eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
+    ...eventJson.baseExtension,
+    parentID: eventJson.parentID,
+    childEPCs: { epc: eventJson.childEPCs },
+    action: eventJson.action,
+  };
+
+  if (eventJson.bizStep !== undefined) {
+    aggregationEvent = { ...aggregationEvent, bizStep: eventJson.bizStep };
+  }
+
+  if (eventJson.disposition !== undefined) {
+    aggregationEvent = {
+      ...aggregationEvent,
+      disposition: eventJson.disposition,
+    };
+  }
+
+  if (eventJson.readPoint !== undefined) {
+    aggregationEvent = {
+      ...aggregationEvent,
+      readPoint: {
+        id: eventJson.readPoint,
+      },
+    };
+  }
+  if (eventJson.bizLocation !== undefined) {
+    aggregationEvent = {
+      ...aggregationEvent,
+      bizLocation: {
+        id: eventJson.bizLocation,
+      },
+    };
+  }
+
+  if (eventJson.bizTransactions !== undefined) {
+    aggregationEvent = {
+      ...aggregationEvent,
+      bizTransactionList: { bizTransaction: eventJson.bizTransactions },
+    };
+  }
+
+  let extensions = {};
+
+  if (eventJson.childQuantityList !== undefined) {
+    extensions = {
+      ...extensions,
+      childQuantityList: eventJson.childQuantityList,
+    };
+  }
+
+  if (eventJson.sourceList !== undefined) {
+    extensions = {
+      ...extensions,
+      sourceList: { source: eventJson.sourceList },
+    };
+  }
+
+  if (eventJson.destinationList !== undefined) {
+    extensions = {
+      ...extensions,
+      destinationList: { destination: eventJson.destinationList },
+    };
+  }
+
+  if (extensions !== {}) {
+    aggregationEvent = { ...aggregationEvent, extension: extensions };
+  }
+
   const epcisDocument = {
     $: epciEventDocument,
     EPCISBody: {
       EventList: {
-        AggregationEvent: {
-          eventTime: eventJson.eventTime,
-          recordTime: eventJson.recordTime,
-          eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
-          ...eventJson.baseExtension,
-          parentID: eventJson.parentID,
-          childEPCs: eventJson.childEPCs,
-          action: eventJson.action,
-          bizStep: eventJson.bizStep,
-          disposition: eventJson.disposition,
-          readPoint: {
-            id: eventJson.readPoint,
-          },
-          bizLocation: {
-            id: eventJson.bizLocation,
-          },
-          bizTransactionList: eventJson.bizTransactionList,
-          extension: {
-            childQuantityList: eventJson.childQuantityList,
-            sourceList: eventJson.sourceList,
-            destinationList: eventJson.destinationList,
-          },
-        },
+        AggregationEvent: aggregationEvent,
       },
     },
   };
@@ -79,33 +175,77 @@ exports.convertToAggregationEventXml = (eventJson) => {
 
 exports.convertToTransactionEventXml = (eventJson) => {
   const xmlBuilder = new xml2js.Builder({ rootName: "epcis:EPCISDocument" });
+
+  let transactionEvent = {
+    eventTime: eventJson.eventTime,
+    recordTime: eventJson.recordTime,
+    eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
+    ...eventJson.baseExtension,
+    bizTransactionList: { bizTransaction: eventJson.bizTransactions },
+    parentID: eventJson.parentID,
+    epcList: eventJson.epcList,
+    action: eventJson.action,
+  };
+
+  if (eventJson.bizStep !== undefined) {
+    transactionEvent = { ...transactionEvent, bizStep: eventJson.bizStep };
+  }
+
+  if (eventJson.disposition !== undefined) {
+    transactionEvent = {
+      ...transactionEvent,
+      disposition: eventJson.disposition,
+    };
+  }
+
+  if (eventJson.readPoint !== undefined) {
+    transactionEvent = {
+      ...transactionEvent,
+      readPoint: {
+        id: eventJson.readPoint,
+      },
+    };
+  }
+  if (eventJson.bizLocation !== undefined) {
+    transactionEvent = {
+      ...transactionEvent,
+      bizLocation: {
+        id: eventJson.bizLocation,
+      },
+    };
+  }
+
+  let extensions = {};
+
+  if (eventJson.quantityList) {
+    extensions = {
+      ...extensions,
+      quantityList: eventJson.quantityList,
+    };
+  }
+  if (eventJson.sourceList !== undefined) {
+    extensions = {
+      ...extensions,
+      sourceList: { sourceList: eventJson.sourceList },
+    };
+  }
+
+  if (eventJson.destinationList !== undefined) {
+    extensions = {
+      ...extensions,
+      destinationList: { destinationList: eventJson.destinationList },
+    };
+  }
+
+  if (extensions !== {}) {
+    transactionEvent = { ...transactionEvent, extension: extensions };
+  }
+
   const epcisDocument = {
     $: epciEventDocument,
     EPCISBody: {
       EventList: {
-        TransactionEvent: {
-          eventTime: eventJson.eventTime,
-          recordTime: eventJson.recordTime,
-          eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
-          ...eventJson.baseExtension,
-          bizTransactionList: eventJson.bizTransactionList,
-          parentID: eventJson.parentID,
-          epcList: eventJson.epcList,
-          action: eventJson.action,
-          bizStep: eventJson.bizStep,
-          disposition: eventJson.disposition,
-          readPoint: {
-            id: eventJson.readPoint,
-          },
-          bizLocation: {
-            id: eventJson.bizLocation,
-          },
-          extension: {
-            quantityList: eventJson.quantityList,
-            sourceList: eventJson.sourceList,
-            destinationList: eventJson.destinationList,
-          },
-        },
+        TransactionEvent: transactionEvent,
       },
     },
   };
@@ -115,32 +255,90 @@ exports.convertToTransactionEventXml = (eventJson) => {
 
 exports.convertToTransformEventXml = (eventJson) => {
   const xmlBuilder = new xml2js.Builder({ rootName: "epcis:EPCISDocument" });
+
+  let extension = {
+    eventTime: eventJson.eventTime,
+    recordTime: eventJson.recordTime,
+    eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
+    ...eventJson.baseExtension,
+  };
+
+  if (eventJson.inputEPCList !== undefined) {
+    extension = {
+      ...extension,
+      inputEPCList: { epc: eventJson.inputEPCList },
+    };
+  }
+
+  if (eventJson.inputQuantityList !== undefined) {
+    extension = {
+      ...extension,
+      inputQuantityList: eventJson.inputQuantityList,
+    };
+  }
+  if (eventJson.outputEPCList !== undefined) {
+    extension = {
+      ...extension,
+      outputEPCList: { epc: eventJson.outputEPCList },
+    };
+  }
+
+  if (eventJson.outputQuantityList !== undefined) {
+    extension = {
+      ...extension,
+      outputQuantityList: eventJson.outputQuantityList,
+    };
+  }
+
+  if (eventJson.bizStep !== undefined) {
+    extension = {
+      ...extension,
+      bizStep: eventJson.bizStep,
+    };
+  }
+
+  if (eventJson.disposition !== undefined) {
+    extension = {
+      ...extension,
+      disposition: eventJson.disposition,
+    };
+  }
+
+  if (eventJson.readPoint !== undefined) {
+    extension = {
+      ...extension,
+      readPoint: {
+        id: eventJson.readPoint,
+      },
+    };
+  }
+  if (eventJson.bizLocation !== undefined) {
+    extension = {
+      ...extension,
+      bizLocation: {
+        id: eventJson.bizLocation,
+      },
+    };
+  }
+  if (eventJson.bizTransactions !== undefined) {
+    extension = {
+      ...extension,
+      bizTransactionList: { bizTransaction: eventJson.bizTransactions },
+    };
+  }
+
+  if (eventJson.xformId !== undefined) {
+    extension = {
+      ...extension,
+      transformationID: eventJson.xformId,
+    };
+  }
+
   const epcisDocument = {
     $: epciEventDocument,
     EPCISBody: {
       EventList: {
-        extension: {
-          TransformationEvent: {
-            eventTime: eventJson.eventTime,
-            recordTime: eventJson.recordTime,
-            eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
-            ...eventJson.baseExtension,
-            inputEPCList: eventJson.inputEPCList,
-            inputQuantityList: eventJson.inputQuantityList,
-            outputEPCList: eventJson.outputEPCList,
-            outputQuantityList: eventJson.outputQuantityList,
-            bizStep: eventJson.bizStep,
-            disposition: eventJson.disposition,
-            readPoint: {
-              id: eventJson.readPoint,
-            },
-            bizLocation: {
-              id: eventJson.bizLocation,
-            },
-            bizTransactionList: eventJson.bizTransactionList,
-            transformationID: eventJson.transformationID,
-          },
-        },
+        TransformationEvent: { extension: extension },
       },
     },
   };
@@ -150,27 +348,52 @@ exports.convertToTransformEventXml = (eventJson) => {
 
 exports.convertToQuantityEventXml = (eventJson) => {
   const xmlBuilder = new xml2js.Builder({ rootName: "epcis:EPCISDocument" });
+  let quantityEvent = {
+    eventTime: eventJson.eventTime,
+    recordTime: eventJson.recordTime,
+    eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
+    ...eventJson.baseExtension,
+    epcClass: eventJson.quantityList.quantityElement[0].epcClass,
+    quantity: eventJson.quantityList.quantityElement[0].quantity,
+  };
+
+  if (eventJson.bizStep !== undefined) {
+    quantityEvent = { ...quantityEvent, bizStep: eventJson.bizStep };
+  }
+
+  if (eventJson.disposition !== undefined) {
+    quantityEvent = { ...quantityEvent, disposition: eventJson.disposition };
+  }
+
+  if (eventJson.readPoint !== undefined) {
+    quantityEvent = {
+      ...quantityEvent,
+      readPoint: {
+        id: eventJson.readPoint,
+      },
+    };
+  }
+  if (eventJson.bizLocation !== undefined) {
+    quantityEvent = {
+      ...quantityEvent,
+      bizLocation: {
+        id: eventJson.bizLocation,
+      },
+    };
+  }
+
+  if (eventJson.bizTransactions !== undefined) {
+    quantityEvent = {
+      ...quantityEvent,
+      bizTransactionList: { bizTransaction: eventJson.bizTransactions },
+    };
+  }
+
   const epcisDocument = {
     $: epciEventDocument,
     EPCISBody: {
       EventList: {
-        QuantityEvent: {
-          eventTime: eventJson.eventTime,
-          recordTime: eventJson.recordTime,
-          eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
-          ...eventJson.baseExtension,
-          epcClass: eventJson.quantityList.quantityElement[0].epcClass,
-          quantity: eventJson.quantityList.quantityElement[0].quantity,
-          bizStep: eventJson.bizStep,
-          disposition: eventJson.disposition,
-          readPoint: {
-            id: eventJson.readPoint,
-          },
-          bizLocation: {
-            id: eventJson.bizLocation,
-          },
-          bizTransactionList: eventJson.bizTransactionList,
-        },
+        QuantityEvent: quantityEvent,
       },
     },
   };
@@ -178,38 +401,3 @@ exports.convertToQuantityEventXml = (eventJson) => {
   return xmlBuilder.buildObject(epcisDocument);
 };
 
-const quantityEvent = {
-  eventTime: "2022-01-01T00:00:00Z",
-  recordTime: "2023-03-30T00:00:00.000+13:00",
-  eventTimeZoneOffset: "-05:00",
-  baseExtension: {
-    baseExtension: {
-      eventID: "eventJson.eventID",
-    },
-  },
-  quantityList: {
-    quantityElement: [
-      { epcClass: "urn:epc:idpat:grai:195212.342345.*", quantity: "100" },
-    ],
-  },
-  bizStep: "entering_selling_location",
-  disposition: "urn:epcglobal:cbv:disp:in_progress",
-  readPoint: "urn:epc:id:sgln:952987.698765.9529876987655",
-  bizLocation: "urn:epc:id:sgln:952987.698765.9529876987655",
-  bizTransactionList: {
-    bizTransaction: [
-      {
-        _: "sfsd",
-        $: {
-          type: "fsfsd",
-        },
-      },
-      {
-        _: "s",
-        $: {
-          type: "fsfsd",
-        },
-      },
-    ],
-  },
-};
