@@ -32,3 +32,18 @@ export async function decodeUri(uri) {
   );
   return response.data;
 }
+
+export async function generateEPCISXml(data) {
+  console.log(data);
+  const response = await axios(
+    `${process.env.REACT_APP_URL}/api/event/add-event`,
+    {
+      headers: {
+        "Content-type": "application/json",
+      },
+      data: data,
+      method: "POST",
+    }
+  );
+  return response.data;
+}
