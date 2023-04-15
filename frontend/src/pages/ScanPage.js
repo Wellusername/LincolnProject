@@ -21,15 +21,21 @@ function ScanPage() {
 
   useEffect(() => {
     if (scanResult && scanResult !== "") {
-      decodeUri(scanResult).then((res) => {
-        console.log(res);
-        if (res.success) {
-          setDecodedResult(res.info);
-          setScan(false);
-        } else {
-          alert(res.message);
-        }
-      });
+      decodeUri(scanResult)
+        .then((res) => {
+          console.log(res);
+          if (res.success) {
+            if (res.info.urlStem === undefined || res.info.urlStem == "") {
+              alert("Not a valide S4T QRcode");
+            }
+            setDecodedResult(res.info);
+            setScan(false);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          alert(e.response.data.message);
+        });
     }
   }, [scanResult]);
 
