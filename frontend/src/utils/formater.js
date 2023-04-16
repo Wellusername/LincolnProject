@@ -21,6 +21,8 @@ export function newEpcisEventDataInputFormatter(userInputData) {
 }
 
 function formobjectEvent(userInputData) {
+  validateAction(userInputData.action);
+
   if (userInputData.ePCs.length <= 0) {
     throw new Error("EPCs cannot be empty");
   }
@@ -49,6 +51,8 @@ function formobjectEvent(userInputData) {
 }
 
 function formAggregationEvent(userInputData) {
+  validateAction(userInputData.action);
+
   if (userInputData.childEPCs.length <= 0) {
     throw new Error("EPCs cannot be empty");
   }
@@ -75,6 +79,8 @@ function formAggregationEvent(userInputData) {
 }
 
 function formTrasactionEvent(userInputData) {
+  validateAction(userInputData.action);
+
   if (userInputData.ePCs.length <= 0) {
     throw new Error("EPCs cannot be empty");
   }
@@ -131,17 +137,15 @@ function formTransformationEvent(userInputData) {
       inputQuantityList: {
         quantityElement: processQuantities(userInputData.inputQuantities),
       },
-      outputQuantityList: {
-        quantityElement: processQuantities(userInputData.outputQuantities),
-      },
     };
   }
 
   if (userInputData.outputQuantities.length > 0) {
+    console.log(userInputData.outputQuantities);
     result = {
       ...result,
-      quantityElement: {
-        epc: processEPC(userInputData.outputQuantities),
+      outputQuantityList: {
+        quantityElement: processQuantities(userInputData.outputQuantities),
       },
     };
   }
@@ -196,7 +200,6 @@ function addOptional(result, userInputData) {
       bizLocation: processReadPoint(userInputData.businessLocation),
     };
   }
-  console.log(userInputData);
 
   if (
     !checkNull(userInputData.bizTransactions) &&
@@ -236,14 +239,8 @@ function addOptional(result, userInputData) {
 
 function formGenericEpcisData(userInputData) {
   var genericEpcisData = {
-    eventTime: processTime(
-      userInputData.eventTime,
-      userInputData.eventTimeTimeZone
-    ),
-    recordTime: processTime(
-      userInputData.recordTime,
-      userInputData.recordTimeTimeZone
-    ),
+    eventTime: processTime(userInputData.eventTime),
+    recordTime: processTime(userInputData.recordTime),
     eventTimeZoneOffset: getTimeZoneVal(userInputData.eventTimeTimeZone),
   };
 
@@ -251,12 +248,7 @@ function formGenericEpcisData(userInputData) {
     checkNotNullError(userInputData.declarationTime, "declarationTime");
 
     let errorDeclaration = {
-      errorDeclaration: {
-        declarationTime: processTime(
-          userInputData.declarationTime,
-          userInputData.declarationTimeZone
-        ),
-      },
+      declarationTime: processTime(userInputData.declarationTime),
     };
 
     errorDeclaration = addOptionalInput(
@@ -274,7 +266,9 @@ function formGenericEpcisData(userInputData) {
       }
     );
     let baseExtension = {
-      errorDeclaration: errorDeclaration,
+      baseExtension: {
+        errorDeclaration: errorDeclaration,
+      },
     };
 
     baseExtension = addOptionalInput(baseExtension, userInputData.eventId, {
@@ -300,9 +294,10 @@ function processEPC(epcs) {
     if (epc.s4tType === "sscc") {
       number = epc["Al00"];
 
-      if (number.length < 18) {
+      if (number.length < 17) {
         throw new Error("sscc length must be greater than 18");
       }
+      number = number.slice(0, 18);
       const prefix = Number(epc.GS1CompanyPrefix) + 1;
       const fristNumber = number.slice(0, 1);
       const firstSection = number.slice(1, prefix);
@@ -642,13 +637,13 @@ function processQuantities(quantities) {
     }
     const epcClass = number;
     let result = { epcClass: epcClass };
-
-    if (q.quantityType == "Variable Measure Quantity") {
-      result = { ...result, uom: q.uom };
-    }
     if (q.quantityType != "Unspecified Quantity") {
       result = { ...result, quantity: q.quantity };
     }
+    if (q.quantityType == "Variable Measure Quantity") {
+      result = { ...result, uom: q.uom };
+    }
+
     return result;
   });
 }
@@ -668,9 +663,7 @@ function processReadPoint(readPoint) {
       throw new Error("Missing Serial");
     }
     const number =
-      processNormalEpcNumber(prefix, number1.slice(0, number1.length - 1)) +
-      "." +
-      number2;
+      processNormalEpcNumber(prefix, number1.slice(0, 12)) + "." + number2;
     return "urn:epc:id:sgln:" + number;
   }
 }
@@ -704,14 +697,34 @@ function processExtension(type, uri) {
 function processNormalEpcNumber(prefix, number) {
   const firstSection = number.slice(0, prefix);
   const secondSection = number.slice(prefix);
+  console.log(firstSection, secondSection);
   return (number = firstSection + "." + secondSection);
 }
 
-function processTime(time, timeZoneName) {
-  const timeZoneTime = timeZonesWithTime.filter(
-    (i) => i.name == timeZoneName
-  )[0].val;
-  return time + timeZoneTime;
+function processTime(time) {
+  const date = new Date(time);
+  // Create a new date object with the desired date and time
+
+  // Get the time zone offset in minutes
+  const timeZoneOffsetInMinutes = 780; // +13:00 hours from UTC
+  const timeZoneOffsetInMilliseconds = timeZoneOffsetInMinutes * 60 * 1000;
+
+  // Get the date and time string in ISO 8601 format with the UTC time zone
+  const isoStringWithUtcOffset = date.toISOString();
+
+  // Modify the date and time string to include the desired time zone offset
+  const formattedDateTimeString =
+    isoStringWithUtcOffset.slice(0, -1) +
+    `${timeZoneOffsetInMinutes < 0 ? "-" : "+"}${Math.abs(
+      Math.floor(timeZoneOffsetInMinutes / 60)
+    )
+      .toString()
+      .padStart(2, "0")}:${Math.abs(timeZoneOffsetInMinutes % 60)
+      .toString()
+      .padStart(2, "0")}`;
+
+  console.log(formattedDateTimeString);
+  return formattedDateTimeString;
 }
 
 function getTimeZoneVal(timeZoneName) {
@@ -764,5 +777,22 @@ function addOptionalInputArrary(original, val, optionalInputArray) {
     return { ...original, ...optionalInputArray };
   } else {
     return { ...original };
+  }
+}
+
+function validateAction(action) {
+  let valid = false;
+  if (checkNull(action)) {
+    throw new Error("Action cannot be empty");
+  } else if (action == "ADD") {
+    valid = true;
+  } else if (action !== "OBSERVE") {
+    valid = true;
+  } else if (action !== "DELETE") {
+    valid = true;
+  }
+
+  if (!valid) {
+    throw new Error("Action cannot be empty");
   }
 }

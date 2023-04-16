@@ -13,7 +13,7 @@ exports.convertToObjectEventXml = (eventJson) => {
     recordTime: eventJson.recordTime,
     eventTimeZoneOffset: eventJson.eventTimeZoneOffset,
     ...eventJson.baseExtension,
-    epcList: { epc: eventJson.epcList },
+    epcList: eventJson.epcList,
     action: eventJson.action,
   };
 
@@ -71,7 +71,7 @@ exports.convertToObjectEventXml = (eventJson) => {
     };
   }
 
-  if (extensions !== {}) {
+  if (JSON.stringify(extensions) !== "{}") {
     objectEvent = { ...objectEvent, extension: extensions };
   }
 
@@ -157,7 +157,7 @@ exports.convertToAggregationEventXml = (eventJson) => {
     };
   }
 
-  if (extensions !== {}) {
+  if (JSON.stringify(extensions) !== "{}") {
     aggregationEvent = { ...aggregationEvent, extension: extensions };
   }
 
@@ -237,7 +237,7 @@ exports.convertToTransactionEventXml = (eventJson) => {
     };
   }
 
-  if (extensions !== {}) {
+  if (JSON.stringify(extensions) !== "{}") {
     transactionEvent = { ...transactionEvent, extension: extensions };
   }
 
@@ -266,7 +266,7 @@ exports.convertToTransformEventXml = (eventJson) => {
   if (eventJson.inputEPCList !== undefined) {
     extension = {
       ...extension,
-      inputEPCList: { epc: eventJson.inputEPCList },
+      inputEPCList: eventJson.inputEPCList,
     };
   }
 
@@ -279,11 +279,13 @@ exports.convertToTransformEventXml = (eventJson) => {
   if (eventJson.outputEPCList !== undefined) {
     extension = {
       ...extension,
-      outputEPCList: { epc: eventJson.outputEPCList },
+      outputEPCList: eventJson.outputEPCList,
     };
   }
 
+  console.log(eventJson, eventJson.outputQuantityList !== undefined);
   if (eventJson.outputQuantityList !== undefined) {
+    console.log("in");
     extension = {
       ...extension,
       outputQuantityList: eventJson.outputQuantityList,
@@ -338,7 +340,7 @@ exports.convertToTransformEventXml = (eventJson) => {
     $: epciEventDocument,
     EPCISBody: {
       EventList: {
-        TransformationEvent: { extension: extension },
+        extension: { TransformationEvent: extension },
       },
     },
   };
@@ -400,4 +402,3 @@ exports.convertToQuantityEventXml = (eventJson) => {
 
   return xmlBuilder.buildObject(epcisDocument);
 };
-

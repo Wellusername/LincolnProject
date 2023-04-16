@@ -126,20 +126,22 @@ function NewEpicsEventPage() {
     }
   };
 
+  console.log(action);
+
   const save = () => {
     let object = {
       eventType1: eventType1,
       eventType2: eventType2,
       eventId: eventId,
 
-      declarationTime: Date.parse(declarationTime),
+      declarationTime: declarationTime,
       declarationTimeZone: declarationTimeZone,
       reason: reason,
       correctiveEventIds: correctiveEventIds,
 
-      eventTime: Date.parse(eventTime),
+      eventTime: eventTime,
       eventTimeTimeZone: eventTimeTimeZone,
-      recordTime: Date.parse(recordTime),
+      recordTime: recordTime,
       recordTimeTimeZone: recordTimeTimeZone,
 
       readPoint: readPoint,
@@ -860,7 +862,7 @@ function NewEpicsEventPage() {
               <optgroup label="GS1 Key">
                 <option value={s4tType.lgtin}>LGTIN (AI 01 + AI 10)</option>
                 <option value={s4tType.sgtin}>GTIN, no serial (AI 01)</option>
-                <option value={s4tType.giai}>GRAI, no serial (AI 8003)</option>
+                <option value={s4tType.grai}>GRAI, no serial (AI 8003)</option>
                 <option value={s4tType.gdti}>GDTI, no serial (AI 253)</option>
                 <option value={s4tType.sgcn}>GCN, no serial (AI 255)</option>
                 <option value={s4tType.cpi}>CPI, no serial (AI 8010)</option>
@@ -1720,7 +1722,9 @@ function NewEpicsEventPage() {
                     </td>
                     <td className="row-content">
                       <select
-                        onChange={(e) => setAction(e.target.value)}
+                        onChange={(e) => {
+                          setAction(e.target.value);
+                        }}
                         value={action}
                       >
                         {Object.values(Action).map((action, i) => (
@@ -1770,7 +1774,7 @@ function NewEpicsEventPage() {
                     <td className="row-content">
                       {declarationTime && <p>{declarationTime} 00:00:00</p>}
                       <input
-                        type="date"
+                        type="datetime-local"
                         value={declarationTime}
                         onChange={(e) => setDeclarationTime(e.target.value)}
                       ></input>
@@ -1863,7 +1867,7 @@ function NewEpicsEventPage() {
                   <td className="row-content">
                     {eventTime && <p>{eventTime} 00:00:00</p>}
                     <input
-                      type="date"
+                      type="datetime-local"
                       value={eventTime}
                       onChange={(e) => setEventTime(e.target.value)}
                     ></input>
@@ -1887,12 +1891,14 @@ function NewEpicsEventPage() {
                   <td className="row-content">
                     {recordTime && <p>{recordTime} 00:00:00</p>}
                     <input
-                      type="date"
+                      type="datetime-local"
                       value={recordTime}
                       onChange={(e) => setRecordTime(e.target.value)}
                     ></input>
                     <select
-                      onChange={(e) => setRecordTimeTimeZone(e.target.value)}
+                      onChange={(e) => {
+                        setRecordTimeTimeZone(e.target.value);
+                      }}
                       value={recordTimeTimeZone}
                     >
                       {timezones.map((t, i) => (
