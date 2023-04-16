@@ -2,7 +2,7 @@ import "./NewEpicsEventPage.css";
 import React from "react";
 import { useState, useEffect } from "react";
 
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, TextField, TextareaAutosize } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 
 import { timezones } from "../consonants/Timezones";
@@ -17,25 +17,12 @@ import {
 import QrCodeScanner from "../layouts/QrCodeScanner";
 import { decodeUri, generateEPCISXml } from "../utils/connectBackend";
 import { newEpcisEventDataInputFormatter } from "../utils/formater";
+import { padding } from "@mui/system";
 
 function NewEpicsEventPage() {
   const [scanResult, setScanResult] = useState();
   const [scan, setScan] = useState(false);
-  const [decodedResult, setDecodedResult] = useState({
-    // sscc: "1234567890",
-    // otherIdentifier: {
-    //   401: "12233344",
-    //   402: "sdasdfasdsds",
-    //   8003: "3sdfsdafasfas",
-    // },
-    // mesurements: {
-    //   "330n": 13.542,
-    //   "331n": 0.75,
-    //   "332n": 0.55,
-    //   "333n": 0.35,
-    //   "336n": 0.08,
-    // },
-  });
+  const [decodedResult, setDecodedResult] = useState({});
 
   const [eventType1, setEventType1] = useState(Object.values(EventType1)[0]);
   const [eventType2, setEventType2] = useState(Object.values(EventType2)[0]);
@@ -243,6 +230,23 @@ function NewEpicsEventPage() {
     }
   };
 
+  const handleCopyToClipboard = (val) => {
+    const tempElem = document.createElement("textarea");
+    tempElem.value = val;
+    document.body.appendChild(tempElem);
+
+    // Select the text in the temporary element
+    tempElem.select();
+
+    // Copy the text to the clipboard
+    document.execCommand("copy");
+
+    // Remove the temporary element
+    document.body.removeChild(tempElem);
+
+    alert("Text copied to clipboard!");
+  };
+
   const handleScanResult = (val) => {
     setScanResult(val);
   };
@@ -353,7 +357,7 @@ function NewEpicsEventPage() {
         console.log(res);
         if (res.success) {
           setXmlResult(res.data);
-          alert(res.data);
+          window.scrollTo(0, 0);
         } else {
           alert(res.message);
         }
@@ -1815,7 +1819,7 @@ function NewEpicsEventPage() {
   };
 
   return (
-    <Grid container padding="3rem">
+    <Grid container paddingTop={"3rem"}>
       <Grid item xs={12} sm={12} md={12} lg={6} align="center">
         {displayButton()}
         <QrCodeScanner
@@ -1823,6 +1827,30 @@ function NewEpicsEventPage() {
           handleScanResult={handleScanResult}
           scan={scan}
         />
+        <div style={{ padding: "2rem" }}>
+          <TextareaAutosize
+            value={xmlResult}
+            minRows={15}
+            maxRows={20}
+            disabled={true}
+            style={{
+              width: "100%",
+              borderRadius: "1rem",
+              resize: "none",
+            }}
+          />
+        </div>
+
+        <Button
+          variant="outlined"
+          color="primary"
+          style={{ margin: "auto auto 2rem auto", padding: "1rem 2rem" }}
+          onClick={() => {
+            handleCopyToClipboard(xmlResult);
+          }}
+        >
+          Copy
+        </Button>
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={6}>
         <table style={{ width: "100%" }}>
