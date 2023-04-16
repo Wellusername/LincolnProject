@@ -5,10 +5,9 @@
 ## About
 
 ### Key Features ###
-   * Browse reviews of food from restaurants nearby 
-   * Liking review to save them for later reference
-   * Creation of new posts to share their experiences with others
-   * Searching for reviews by their name, retaurant details and any related keywords  
+   * Produce a S4T barcode
+   * Decode S4T QR code
+   * Produce GS1 EPCIS Events with S4T data
 <details><summary>Browse screenshots</summary>
   
 
