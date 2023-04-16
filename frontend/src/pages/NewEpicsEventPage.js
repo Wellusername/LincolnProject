@@ -74,6 +74,8 @@ function NewEpicsEventPage() {
   const [sources, setSources] = useState([]);
   const [destinations, setDestinations] = useState([]);
 
+  const [xmlResult, setXmlResult] = useState("");
+
   useEffect(() => {
     if (eventType1) {
       setEPCs([]);
@@ -118,7 +120,10 @@ function NewEpicsEventPage() {
           variant="outlined"
           color="primary"
           style={{ margin: "auto auto 2rem auto", padding: "1rem 2rem" }}
-          onClick={() => handleScanButton()}
+          onClick={() => {
+            cancel();
+            handleScanButton();
+          }}
         >
           Scan
         </Button>
@@ -206,6 +211,7 @@ function NewEpicsEventPage() {
       generateEPCISXml(data).then((res) => {
         console.log(res);
         if (res.success) {
+          setXmlResult(res.data);
           alert(res.data);
         } else {
           alert(res.message);
@@ -248,6 +254,7 @@ function NewEpicsEventPage() {
     setBizTransactions([]);
     setSources([]);
     setDestinations([]);
+    setXmlResult("");
   };
 
   const generate = () => {
@@ -1675,6 +1682,7 @@ function NewEpicsEventPage() {
           handleScanResult={handleScanResult}
           scan={scan}
         />
+        
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={6}>
         <table style={{ width: "100%" }}>
