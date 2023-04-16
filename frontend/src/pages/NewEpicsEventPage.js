@@ -1946,7 +1946,6 @@ function NewEpicsEventPage() {
                       Declaration Time
                     </td>
                     <td className="row-content">
-                      {declarationTime && <p>{declarationTime} 00:00:00</p>}
                       <input
                         type="datetime-local"
                         value={declarationTime}
@@ -2039,7 +2038,6 @@ function NewEpicsEventPage() {
                     Event Time
                   </td>
                   <td className="row-content">
-                    {eventTime && <p>{eventTime} 00:00:00</p>}
                     <input
                       type="datetime-local"
                       value={eventTime}
@@ -2063,7 +2061,6 @@ function NewEpicsEventPage() {
                     Record Time
                   </td>
                   <td className="row-content">
-                    {recordTime && <p>{recordTime} 00:00:00</p>}
                     <input
                       type="datetime-local"
                       value={recordTime}
