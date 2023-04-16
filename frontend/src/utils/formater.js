@@ -294,8 +294,8 @@ function processEPC(epcs) {
     if (epc.s4tType === "sscc") {
       number = epc["Al00"];
 
-      if (number.length < 17) {
-        throw new Error("sscc length must be greater than 18");
+      if (number.length != 18) {
+        throw new Error("sscc length must 18");
       }
       number = number.slice(0, 18);
       const prefix = Number(epc.GS1CompanyPrefix) + 1;
@@ -325,7 +325,7 @@ function processEPC(epcs) {
 
       number = processNormalEpcNumber(prefix, number);
     } else if (epc.s4tType === "sgtin") {
-      let number1 = epc["Al01"];
+      let number1 = epc["Al01"].slice(0, 14);
       let number2 = epc["Al02"];
       if (number1.length != 14) {
         throw new Error("GTIN must be 14 digits");
@@ -351,7 +351,7 @@ function processEPC(epcs) {
 
       number = processNormalEpcNumber(prefix, number);
     } else if (epc.s4tType === "gsrn") {
-      number = epc["Al8018"];
+      number = epc["Al8018"].slice(0, 18);
       const prefix = Number(epc.GS1CompanyPrefix);
 
       if (number.length != 18) {
@@ -360,7 +360,7 @@ function processEPC(epcs) {
 
       number = processNormalEpcNumber(prefix, number).slice(0, number.length);
     } else if (epc.s4tType === "gsrnp") {
-      number = epc["Al8017"];
+      number = epc["Al8017"].slice(0, 18);
       const prefix = Number(epc.GS1CompanyPrefix);
 
       if (number.length != 18) {
@@ -370,7 +370,6 @@ function processEPC(epcs) {
       number = processNormalEpcNumber(prefix, number).slice(0, number.length);
     } else if (epc.s4tType === "gdti") {
       number = epc["Al253"];
-      console.log(number.length > 13 && number.length < 30);
       const prefix = Number(epc.GS1CompanyPrefix);
       if (number.length < 13 && number.length > 30) {
         throw new Error(
@@ -378,7 +377,8 @@ function processEPC(epcs) {
         );
       }
       number = processNormalEpcNumber(prefix, number);
-      number = number.slice(0, 14) + "." + number.slice(14);
+      number = number.slice(0, number.length - 2);
+      number = number.slice(0, 13) + "." + number.slice(14);
     } else if (epc.s4tType === "sgcn") {
       number = epc["Al255"];
       const prefix = Number(epc.GS1CompanyPrefix);
@@ -387,11 +387,11 @@ function processEPC(epcs) {
           "SGCN with Serial must be 14 digits followed by 1 to 25 alphanumeric characters"
         );
       }
-
-      const first = number.slice(0, 13);
+      const first = number.slice(0, 12);
       const first1 = first.slice(0, prefix);
       const first2 = first.slice(prefix);
       const secondSection = number.slice(13);
+      console.log(first, secondSection, prefix);
       number = first1 + "." + first2 + "." + secondSection;
     } else if (epc.s4tType === "cpi") {
       const number1 = epc["Al8010"];
@@ -409,7 +409,7 @@ function processEPC(epcs) {
 
       number = processNormalEpcNumber(prefix, number1) + "." + number2;
     } else if (epc.s4tType === "gsin") {
-      number = epc["Al402"];
+      number = epc["Al402"].slice(0, 17);
       const prefix = Number(epc.GS1CompanyPrefix);
 
       if (number.length != 17) {
@@ -522,7 +522,7 @@ function processQuantities(quantities) {
       const prefix = Number(q.GS1CompanyPrefix);
       const fristNumber = number1.slice(0, 1);
       const firstSection = number1.slice(1, prefix + 1);
-      const secondSection = number1.slice(prefix, number1.length - 1);
+      const secondSection = number1.slice(prefix + 1, number1.length - 1);
       number =
         "urn:epc:class:lgtin:" +
         firstSection +
@@ -531,7 +531,7 @@ function processQuantities(quantities) {
         secondSection +
         "." +
         number2;
-    } else if (q.s4tType === "gtin") {
+    } else if (q.s4tType === "sgtin") {
       const number1 = q["Al01"];
 
       if (number1.length != 14) {
@@ -541,13 +541,14 @@ function processQuantities(quantities) {
       const prefix = Number(q.GS1CompanyPrefix);
       const fristNumber = number1.slice(0, 1);
       const firstSection = number1.slice(1, prefix + 1);
-      const secondSection = number1.slice(prefix, number1.length - 1);
+      const secondSection = number1.slice(prefix + 1, number1.length - 1);
       number =
         "urn:epc:idpat:sgtin:" +
         firstSection +
         "." +
         fristNumber +
-        secondSection;
+        secondSection +
+        ".*";
     } else if (q.s4tType === "grai") {
       const number1 = q["Al8003"];
 
@@ -571,10 +572,10 @@ function processQuantities(quantities) {
 
       const prefix = Number(q.GS1CompanyPrefix);
       const firstSection = number1.slice(0, prefix);
-      const secondSection = number1.slice(prefix, 12);
+      const secondSection = number1.slice(prefix, 13);
       number =
         "urn:epc:idpat:gdti:" + firstSection + "." + secondSection + ".*";
-    } else if (q.s4tType === "gcn") {
+    } else if (q.s4tType === "sgcn") {
       const number1 = q["Al255"];
 
       if (number1.length != 13) {
@@ -583,7 +584,7 @@ function processQuantities(quantities) {
 
       const prefix = Number(q.GS1CompanyPrefix);
       const firstSection = number1.slice(0, prefix);
-      const secondSection = number1.slice(prefix, 12);
+      const secondSection = number1.slice(prefix, 13);
       number =
         "urn:epc:idpat:sgcn:" + firstSection + "." + secondSection + ".*";
     } else if (q.s4tType === "cpi") {
@@ -605,14 +606,21 @@ function processQuantities(quantities) {
 
       const prefix = Number(q.GS1CompanyPrefix);
       const fristNumber = number1.slice(0, 1);
-      const firstSection = number1.slice(1, prefix + 1);
-      const secondSection = number1.slice(prefix, number1.length - 1);
+      const firstSection = number1.slice(1, 13);
+      const first = firstSection.slice(0, prefix);
+      const second = firstSection.slice(prefix, firstSection.length);
+      const third = number1.slice(14, 16);
+      const fourth = number1.slice(16, 18);
       number =
         "urn:epc:idpat:itip:" +
-        firstSection +
+        first +
         "." +
         fristNumber +
-        secondSection +
+        second +
+        "." +
+        third +
+        "." +
+        fourth +
         ".*";
     } else if (q.s4tType === "upui") {
       const number1 = q["Al01"];
@@ -624,7 +632,7 @@ function processQuantities(quantities) {
       const prefix = Number(q.GS1CompanyPrefix);
       const fristNumber = number1.slice(0, 1);
       const firstSection = number1.slice(1, prefix + 1);
-      const secondSection = number1.slice(prefix, number1.length - 1);
+      const secondSection = number1.slice(prefix + 1, number1.length - 1);
       number =
         "urn:epc:idpat:upui:" +
         firstSection +

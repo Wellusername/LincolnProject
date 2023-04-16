@@ -51,10 +51,12 @@ exports.convertToObjectEventXml = (eventJson) => {
 
   let extensions = {};
 
-  if (eventJson.quantityList !== undefined) {
+  console.log(eventJson.quantityList);
+
+  if (eventJson.quantityElement !== undefined) {
     extensions = {
       ...extensions,
-      quantityList: eventJson.quantityList,
+      quantityList: { quantityElement: eventJson.quantityElement },
     };
   }
   if (eventJson.sourceList !== undefined) {
@@ -283,7 +285,6 @@ exports.convertToTransformEventXml = (eventJson) => {
     };
   }
 
-  console.log(eventJson, eventJson.outputQuantityList !== undefined);
   if (eventJson.outputQuantityList !== undefined) {
     console.log("in");
     extension = {
