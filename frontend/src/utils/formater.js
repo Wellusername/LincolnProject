@@ -310,7 +310,7 @@ function processEPC(epcs) {
       }
       const prefix = Number(epc.GS1CompanyPrefix);
       const firstSection = number.slice(0, prefix);
-      const secondSection = number.slice(prefix, 13);
+      const secondSection = number.slice(prefix, 12);
       const lastSection = number.slice(11);
       number = firstSection + "." + secondSection + "." + lastSection;
     } else if (epc.s4tType === "ginc") {
