@@ -21,7 +21,21 @@ import { newEpcisEventDataInputFormatter } from "../utils/formater";
 function NewEpicsEventPage() {
   const [scanResult, setScanResult] = useState();
   const [scan, setScan] = useState(false);
-  const [decodedResult, setDecodedResult] = useState({});
+  const [decodedResult, setDecodedResult] = useState({
+    // sscc: "1234567890",
+    // otherIdentifier: {
+    //   401: "12233344",
+    //   402: "sdasdfasdsds",
+    //   8003: "3sdfsdafasfas",
+    // },
+    // mesurements: {
+    //   "330n": 13.542,
+    //   "331n": 0.75,
+    //   "332n": 0.55,
+    //   "333n": 0.35,
+    //   "336n": 0.08,
+    // },
+  });
 
   const [eventType1, setEventType1] = useState(Object.values(EventType1)[0]);
   const [eventType2, setEventType2] = useState(Object.values(EventType2)[0]);
@@ -77,6 +91,12 @@ function NewEpicsEventPage() {
   const [xmlResult, setXmlResult] = useState("");
 
   useEffect(() => {
+    if (decodedResult) {
+      // populateForm(decodedResult);
+    }
+  }, [decodedResult]);
+
+  useEffect(() => {
     if (eventType1) {
       setEPCs([]);
       setEPCsOutput([]);
@@ -85,6 +105,10 @@ function NewEpicsEventPage() {
       setQuantity({ type: "Quantity", s4tType: "null", quantity: "" });
       setParentId({ type: "Parent ID", s4tType: "null" });
       setXformId("");
+
+      if (JSON.stringify(decodedResult) !== "{}") {
+        populateForm(decodedResult); //remove
+      }
     }
   }, [eventType1]);
 
@@ -101,6 +125,123 @@ function NewEpicsEventPage() {
       });
     }
   }, [scanResult]);
+
+  const populateForm = (data) => {
+    if (
+      eventType1 === EventType1.quantityEvent &&
+      Object.keys(data.otherIdentifier).includes("8003")
+    ) {
+      const grai = returnS4tTypeBlankObject(s4tType.grai);
+      grai.Al8003 = data.otherIdentifier["8003"];
+
+      const newQuantity = {
+        ...quantity,
+        ...grai,
+      };
+      newQuantity.s4tType = s4tType.grai;
+      setQuantity(newQuantity);
+    } else {
+      const newEPCs = [];
+      if (Object.keys(data).includes("sscc")) {
+        const scss = returnS4tTypeBlankObject(s4tType.sscc);
+        scss.Al00 = data.sscc;
+        scss.type = "EPCs";
+        scss.s4tType = s4tType.sscc;
+        newEPCs.push(scss);
+      }
+
+      if (Object.keys(data.otherIdentifier).includes("401")) {
+        const ginc = returnS4tTypeBlankObject(s4tType.ginc);
+        ginc.Al401 = data.otherIdentifier["401"];
+        ginc.type = "EPCs";
+        ginc.s4tType = s4tType.ginc;
+        newEPCs.push(ginc);
+      }
+
+      if (Object.keys(data.otherIdentifier).includes("402")) {
+        const gsin = returnS4tTypeBlankObject(s4tType.gsin);
+        gsin.Al402 = data.otherIdentifier["402"];
+        gsin.type = "EPCs";
+        gsin.s4tType = s4tType.gsin;
+        newEPCs.push(gsin);
+      }
+
+      if (Object.keys(data.otherIdentifier).includes("8003")) {
+        const grai = returnS4tTypeBlankObject(s4tType.grai);
+        grai.Al8003 = data.otherIdentifier["8003"];
+        grai.type = "EPCs";
+        grai.s4tType = s4tType.grai;
+        newEPCs.push(grai);
+      }
+      setEPCs(newEPCs);
+
+      const newQuantities = [];
+      const grai = returnS4tTypeBlankObject(s4tType.grai);
+      grai.Al8003 = data.otherIdentifier["8003"];
+      grai.s4tType = s4tType.grai;
+      if (Object.keys(data.measurements).includes("330n")) {
+        const quantity = {
+          type: "Quantities",
+          s4tType: s4tType.grai,
+          quantityType: quantityType["Variable Measure Quantity"],
+          quantity: data.measurements["330n"],
+          uom: "KGM",
+          ...grai,
+        };
+        newQuantities.push(quantity);
+      }
+
+      if (Object.keys(data.measurements).includes("332n")) {
+        const quantity = {
+          type: "Quantities",
+          s4tType: s4tType.grai,
+          quantityType: quantityType["Variable Measure Quantity"],
+          quantity: data.measurements["332n"],
+          uom: "KGM",
+          ...grai,
+        };
+        newQuantities.push(quantity);
+      }
+
+      if (Object.keys(data.measurements).includes("333n")) {
+        const quantity = {
+          type: "Quantities",
+          s4tType: s4tType.grai,
+          quantityType: quantityType["Variable Measure Quantity"],
+          quantity: data.measurements["333n"],
+          uom: "KGM",
+          ...grai,
+        };
+        newQuantities.push(quantity);
+      }
+
+      if (Object.keys(data.measurements).includes("336n")) {
+        const quantity = {
+          type: "Quantities",
+          s4tType: s4tType.grai,
+          quantityType: quantityType["Variable Measure Quantity"],
+          quantity: data.measurements["336n"],
+          uom: "MTQ",
+          ...grai,
+        };
+        newQuantities.push(quantity);
+      }
+
+      if (Object.keys(data.measurements).includes("331n")) {
+        const quantity = {
+          type: "Quantities",
+          s4tType: s4tType.grai,
+          quantityType: quantityType["Variable Measure Quantity"],
+          quantity: data.measurements["331n"],
+          uom: "MTR",
+          ...grai,
+        };
+        newQuantities.push(quantity);
+      }
+
+      setQuantities(newQuantities);
+    }
+  };
 
   const handleScanResult = (val) => {
     setScanResult(val);
@@ -1682,7 +1823,6 @@ function NewEpicsEventPage() {
           handleScanResult={handleScanResult}
           scan={scan}
         />
-        
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={6}>
         <table style={{ width: "100%" }}>
