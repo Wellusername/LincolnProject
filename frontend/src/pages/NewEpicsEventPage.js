@@ -277,7 +277,6 @@ function NewEpicsEventPage() {
     }
   };
 
-
   const save = () => {
     let object = {
       eventType1: eventType1,
@@ -1818,7 +1817,7 @@ function NewEpicsEventPage() {
   };
 
   return (
-    <Grid container paddingTop={"3rem"}>
+    <Grid container paddingTop={"3rem"} paddingBottom={"3rem"}>
       <Grid item xs={12} sm={12} md={12} lg={6} align="center">
         {displayButton()}
         <QrCodeScanner
