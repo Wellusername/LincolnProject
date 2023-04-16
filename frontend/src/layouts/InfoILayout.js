@@ -15,7 +15,6 @@ function InfoLayout({
   decodedResult,
 }) {
   const stringInput = (obj, i) => {
-    console.log(decodedResult);
     return (
       <InfoInputWithAI
         id={obj.id}
@@ -118,7 +117,6 @@ function InfoLayout({
       <Grid item xs={12}>
         <Grid container spacing={0.3}>
           {primaryIdentifiers.map((i) => {
-            console.log(decodedResult);
             return (
               <Grid item xs={12}>
                 <InfoInput

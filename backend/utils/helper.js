@@ -100,7 +100,6 @@ exports.extractInfoFromDigitalLink = (digitalLink) => {
             codeVal[kv[0]] = decodeURIComponent(v);
           }
 
-          console.log(data.grouping);
 
           if (data.grouping === "OtherIdentifiers") {
             otherIdentifier = { ...otherIdentifier, ...codeVal };
@@ -205,7 +204,6 @@ gs1date4 = (gs1Date) => {
         min;
     }
   }
-  console.log(rv);
 
   return rv;
 };

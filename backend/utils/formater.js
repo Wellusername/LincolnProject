@@ -2,7 +2,6 @@ exports.checkPattern = (val, termObj) => {
   if (typeof termObj.pattern !== "undefined") {
     var reg = new RegExp(termObj.pattern);
 
-    console.log(val, reg, reg.test(val));
 
     if (!reg.test(val)) {
       throw new Error(termObj.id + " is not the right pattern");

@@ -18,9 +18,7 @@ function QRcodeGenerationLayout({ info, handleClearInput, handleClearInfo }) {
       } else {
         setResult({ url: "" });
       }
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }, [info]);
 
   useEffect(() => {
@@ -36,13 +34,11 @@ function QRcodeGenerationLayout({ info, handleClearInput, handleClearInfo }) {
       const val = Object.values(info);
       getUrlAndQRcode(info)
         .then((res) => {
-          console.log(res);
           if (res.success) {
             alert("Valid Input");
           }
         })
         .catch((e) => {
-          console.log(e);
           alert(e.response.data.message);
         });
     } catch (e) {

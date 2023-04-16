@@ -21,7 +21,6 @@ function PullDownInputWIthAI({
 
   useEffect(() => {
     if (clear) {
-      console.log(clear);
       setText("");
       handleClearInput(false);
     }

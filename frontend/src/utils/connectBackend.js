@@ -18,7 +18,6 @@ export async function getUrlAndQRcode(infoData) {
 export async function decodeUri(uri) {
   const data = {};
   data["uri"] = uri;
-  console.log(data);
 
   const response = await axios(
     `${process.env.REACT_APP_URL}/api/event/decode`,
@@ -34,7 +33,6 @@ export async function decodeUri(uri) {
 }
 
 export async function generateEPCISXml(data) {
-  console.log(data);
   const response = await axios(
     `${process.env.REACT_APP_URL}/api/event/add-event`,
     {

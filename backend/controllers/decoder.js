@@ -6,7 +6,6 @@ const {
 
 exports.decodeUri = async (req, res, next) => {
   const { uri } = req.body;
-  console.log(uri);
 
   let result = {};
 

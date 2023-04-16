@@ -16,7 +16,6 @@ function DateTimeInputWithAI({
 
   useEffect(() => {
     if (clear) {
-      console.log(clear);
       setText("");
       handleClearInput(false);
     }

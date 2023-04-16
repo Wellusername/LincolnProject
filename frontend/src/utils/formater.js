@@ -141,7 +141,6 @@ function formTransformationEvent(userInputData) {
   }
 
   if (userInputData.outputQuantities.length > 0) {
-    console.log(userInputData.outputQuantities);
     result = {
       ...result,
       outputQuantityList: {
@@ -187,7 +186,6 @@ function addOptional(result, userInputData) {
   }
 
   if (!checkNull(userInputData.readPoint.s4tType)) {
-    console.log(checkNull(userInputData.readPoint.s4tType));
     result = {
       ...result,
       readPoint: processReadPoint(userInputData.readPoint),
@@ -391,7 +389,6 @@ function processEPC(epcs) {
       const first1 = first.slice(0, prefix);
       const first2 = first.slice(prefix);
       const secondSection = number.slice(13);
-      console.log(first, secondSection, prefix);
       number = first1 + "." + first2 + "." + secondSection;
     } else if (epc.s4tType === "cpi") {
       const number1 = epc["Al8010"];
@@ -705,7 +702,6 @@ function processExtension(type, uri) {
 function processNormalEpcNumber(prefix, number) {
   const firstSection = number.slice(0, prefix);
   const secondSection = number.slice(prefix);
-  console.log(firstSection, secondSection);
   return (number = firstSection + "." + secondSection);
 }
 
@@ -731,7 +727,6 @@ function processTime(time) {
       .toString()
       .padStart(2, "0")}`;
 
-  console.log(formattedDateTimeString);
   return formattedDateTimeString;
 }
 

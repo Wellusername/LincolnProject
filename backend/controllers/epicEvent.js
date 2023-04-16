@@ -11,7 +11,6 @@ exports.generateDigitalLink = async (req, res, next) => {
   var sheetName = "Sheet1";
 
   spread_sheet.addRow(data, filePath, sheetName, function (err, result) {
-    console.log(err, result);
     if (err) {
       res.status(400).json({
         success: false,
@@ -46,7 +45,6 @@ exports.generateAndPersistEPICSEventsInXml = async (req, res, next) => {
         message: "Event does not exist",
       });
     }
-    console.log(result);
 
     res.status(200).json({
       success: true,

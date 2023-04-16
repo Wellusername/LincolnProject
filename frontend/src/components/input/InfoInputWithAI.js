@@ -15,7 +15,6 @@ function InfoInputWithAI({
   const [text, setText] = useState("");
   useEffect(() => {
     if (clear) {
-      console.log(clear);
       setText("");
       handleClearInput(false);
     }

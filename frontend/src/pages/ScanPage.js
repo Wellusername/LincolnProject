@@ -23,7 +23,6 @@ function ScanPage() {
     if (scanResult && scanResult !== "") {
       decodeUri(scanResult)
         .then((res) => {
-          console.log(res);
           if (res.success) {
             if (res.info.urlStem === undefined || res.info.urlStem == "") {
               alert("Not a valide S4T QRcode");
@@ -33,14 +32,12 @@ function ScanPage() {
           }
         })
         .catch((e) => {
-          console.log(e);
           alert(e.response.data.message);
         });
     }
   }, [scanResult]);
 
   const displayButton = () => {
-    console.log(scan);
     if (!scan) {
       return (
         <Button

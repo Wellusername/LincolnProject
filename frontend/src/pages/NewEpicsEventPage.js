@@ -101,15 +101,17 @@ function NewEpicsEventPage() {
 
   useEffect(() => {
     if (scanResult && scanResult !== "") {
-      decodeUri(scanResult).then((res) => {
-        console.log(res);
-        if (res.success) {
-          setDecodedResult(res.info);
-          setScan(false);
-        } else {
-          console.log(res.message);
-        }
-      });
+      decodeUri(scanResult)
+        .then((res) => {
+          if (res.success) {
+            setDecodedResult(res.info);
+            setScan(false);
+          } else {
+          }
+        })
+        .catch((e) => {
+          alert(e.response.data.message);
+        });
     }
   }, [scanResult]);
 
@@ -258,7 +260,6 @@ function NewEpicsEventPage() {
   };
 
   const displayButton = () => {
-    console.log(scan);
     if (!scan) {
       return (
         <Button
@@ -276,7 +277,6 @@ function NewEpicsEventPage() {
     }
   };
 
-  console.log(action);
 
   const save = () => {
     let object = {
@@ -354,7 +354,6 @@ function NewEpicsEventPage() {
       };
 
       generateEPCISXml(data).then((res) => {
-        console.log(res);
         if (res.success) {
           setXmlResult(res.data);
           window.scrollTo(0, 0);

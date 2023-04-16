@@ -26,11 +26,9 @@ exports.generateBarcode = (req, res, next) => {
 
   try {
     generateBarcodeUtil(barcodeType, url).then((bufferImage) => {
-      console.log(bufferImage);
 
       const img = "data:image/png;base64," + bufferImage.toString("base64");
       const visual = "<img src=" + img + " />";
-      console.log(visual);
 
       if (visualise) {
         res.send(visual);
@@ -72,15 +70,12 @@ exports.generateBarcodeBuffered = (req, res, next) => {
 
 exports.gnerateURLAndBarcode = (req, res, next) => {
   try {
-    console.log(req.body);
     const url = generateUrl(req.body);
 
     generateBarcodeUtil("qrcode", url).then((bufferImage) => {
-      console.log(bufferImage);
 
       const img = "data:image/png;base64," + bufferImage.toString("base64");
       const visual = "<img src=" + img + " />";
-      console.log(visual);
 
       res.status(200).json({
         success: true,
