@@ -50,6 +50,19 @@ exports.generateAndPersistEPICSEventsInXml = async (req, res, next) => {
       success: true,
       data: result,
     });
+
+    try {
+      // Data which will write in a file.
+      let data = "Learning how to write in a file.";
+
+      // Write data in 'Output.txt' .
+      const name = "result" + ".txt";
+      console.log(name);
+      fs.writeFile("./data/" + name, result, (err) => {
+        // In case of a error throw err.
+        if (err) throw err;
+      });
+    } catch (e) {}
   } catch (e) {
     res.status(400).json({
       success: false,
