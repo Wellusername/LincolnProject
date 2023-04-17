@@ -342,7 +342,7 @@ function NewEpicsEventPage() {
     } else if (eventType1 === EventType1.quantityEvent) {
       object = {
         ...object,
-        quantities: quantities,
+        quantities: [quantity],
       };
     }
 
