@@ -1098,7 +1098,7 @@ function NewEpicsEventPage() {
               <optgroup label="GS1 Key">
                 <option value={s4tType.lgtin}>LGTIN (AI 01 + AI 10)</option>
                 <option value={s4tType.sgtin}>GTIN, no serial (AI 01)</option>
-                <option value={s4tType.giai}>GRAI, no serial (AI 8003)</option>
+                <option value={s4tType.grai}>GRAI, no serial (AI 8003)</option>
                 <option value={s4tType.gdti}>GDTI, no serial (AI 253)</option>
                 <option value={s4tType.sgcn}>GCN, no serial (AI 255)</option>
                 <option value={s4tType.cpi}>CPI, no serial (AI 8010)</option>
