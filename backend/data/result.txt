@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" schemaVersion="1.2" creationDate="2023-04-17T08:08:31.747Z">
+  <EPCISBody>
+    <EventList>
+      <QuantityEvent>
+        <eventTime>2023-04-16T18:15:00.000+13:00</eventTime>
+        <recordTime>2023-04-16T18:15:00.000+13:00</recordTime>
+        <eventTimeZoneOffset>+13:00</eventTimeZoneOffset>
+        <baseExtension>
+          <eventId>urn:uuid:173d7e4f-fa7c-4269-a31c-8b19dead9710</eventId>
+        </baseExtension>
+        <epcClass>urn:epc:idpat:grai:123456.789012.*</epcClass>
+        <quantity>1</quantity>
+        <bizStep>Ship out</bizStep>
+        <disposition>Ship out</disposition>
+        <readPoint>
+          <id>urn:epc:id:sgln:123456.789012.1</id>
+        </readPoint>
+        <bizLocation>
+          <id>urn:epc:id:sgln:123456.789012.1</id>
+        </bizLocation>
+        <bizTransactionList>
+          <bizTransaction type="12345">1</bizTransaction>
+        </bizTransactionList>
+      </QuantityEvent>
+    </EventList>
+  </EPCISBody>
+</epcis:EPCISDocument>
