@@ -16,8 +16,6 @@ import {
 
 import QrCodeScanner from "../layouts/QrCodeScanner";
 import { decodeUri, generateEPCISXml } from "../utils/connectBackend";
-import { newEpcisEventDataInputFormatter } from "../utils/formater";
-import { padding } from "@mui/system";
 
 function NewEpicsEventPage() {
   const [scanResult, setScanResult] = useState();
@@ -348,7 +346,7 @@ function NewEpicsEventPage() {
 
     try {
       const data = {
-        eventData: newEpcisEventDataInputFormatter(object),
+        eventData: object,
         eventType: object.eventType1,
       };
 

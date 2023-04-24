@@ -1,6 +1,6 @@
-import { timeZonesWithTime } from "../consonants/Timezones";
+const { timeZonesWithTime } = require("../resource/TimeZones");
 
-export function newEpcisEventDataInputFormatter(userInputData) {
+exports.newEpcisEventDataInputFormatter = (userInputData) => {
   validation(userInputData);
   const base = formGenericEpcisData(userInputData);
   let result = { ...base };
@@ -18,7 +18,7 @@ export function newEpcisEventDataInputFormatter(userInputData) {
   }
 
   return result;
-}
+};
 
 function formobjectEvent(userInputData) {
   validateAction(userInputData.action);
